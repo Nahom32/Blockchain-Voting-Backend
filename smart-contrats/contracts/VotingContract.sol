@@ -27,8 +27,7 @@ contract ElectionVotingContract{
     event VotedMessage(bool,string);
     
     
-    function createElection(string memory _electionName, Candidate[] memory candidatesArg) public payable {
-        //require(msg.value == 1000 wei, "The creator should be able to pay 1000 wei");
+    function createElection(string memory _electionName, Candidate[] memory candidatesArg) public {
         Election storage electionToPersist =  elections.push();
         election_count+=1;
         electionToPersist.electionId = Strings.toString(election_count);
