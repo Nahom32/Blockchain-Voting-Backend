@@ -1,7 +1,7 @@
 # Blockchain-Voting-Backend
 Blockchain Voting Backend
 
-Note on the express-backend develpment
+Note on the express-backend development
 
 ## Flow
 
@@ -12,9 +12,9 @@ npm install
 
 ## Prisma Notes
 
-1 Defeine your models to the schema.prisma file
+1 Define your models to the schema.prisma file
 
-2 Run a migration to create adatabase tables with Prisma Migrate
+2 Run a migration to create database tables with Prisma Migrate
 
 ```bash
 npx prisma migrate dev --name init
