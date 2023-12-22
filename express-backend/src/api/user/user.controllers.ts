@@ -4,7 +4,7 @@ import { CRequest } from '../../shared/customRequest';
 
 /**
  * @openapi
- * /api/user:
+ * /api/v1/user:
  *   post:
  *     summary: Create a new user
  *     description: Create a new user
