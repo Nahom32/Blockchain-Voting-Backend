@@ -8,12 +8,10 @@ import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
 
-
-
 const app = express();
 const port = 3000;
 app.use(express.static(path.join(__dirname, '../public')));
-
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser())
