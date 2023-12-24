@@ -4,7 +4,7 @@ import { CRequest } from '../../shared/customRequest';
 
 /**
  * @openapi
- * /api/auth/login:
+ * /api/v1/auth/login:
  *   post:
  *     summary: Login to the system
  *     description: Login to the system
