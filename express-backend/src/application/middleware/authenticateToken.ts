@@ -1,18 +1,21 @@
+import { verifyAccessToken } from '@application/services/jwt-services';
+import { CRequest } from '@shared/customRequest';
 import { Response, NextFunction } from 'express';
-import { verifyToken } from '../services/jwt-and-hash-services';
-import { CRequest } from '../../shared/customRequest';
+
 
 export function authenticateToken(req: CRequest, res: Response, next: NextFunction) {
-  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+  const requestHeader = req.headers['authorization'];
+  const token = requestHeader && requestHeader.split(' ')[1];
   if (!token) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    return res.status(401).json({success: false, error: 'Unauthorized' });
   }
 
   try {
-    const decoded = verifyToken(token);
-    req.user = decoded;
+    const user = verifyAccessToken(token);
+    req.user = user;
     next();
   } catch (error) {
-    res.status(403).json({ error: 'Forbidden' });
+    console.error(error);
+    res.status(403).json({success: false, error: 'Forbidden' });
   }
 }

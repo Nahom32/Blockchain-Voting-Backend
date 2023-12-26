@@ -1,11 +1,13 @@
-import { makeUserList } from "../../user";
+import { CRequest } from "@shared/customRequest";
 import makeCredentials from "../credentials";
-import makeHttpError from '../../../shared/makeHttpError';
-import makeHttpResponse from '../../../shared/makeHttpResponse';
-import { CustomError, NotFoundError, RequiredParameterError } from "../../../shared/ customError";
-import { comparePassword, signToken } from "../../services/jwt-and-hash-services";
-import { CRequest } from "../../../shared/customRequest";
+import { makeUserList } from "@application/user";
+import { CustomError, NotFoundError, RequiredParameterError } from "@shared/ customError";
+import makeHttpResponse from "@shared/makeHttpResponse";
+import makeHttpError from "@shared/makeHttpError";
+import { comparePassword } from "@application/services/hash-services";
+import { generateTokens } from "@application/services/jwt-services";
 import { LoginAccessData } from "../credentials.models";
+
 
 export async function handleLoginRequest(httpRequest: CRequest) {
     try {
@@ -22,17 +24,15 @@ export async function handleLoginRequest(httpRequest: CRequest) {
             throw new NotFoundError('User with email and password not found.')
         }
 
-        const token = signToken(userFound.email);
+        const tokens:LoginAccessData = generateTokens(userFound.id, userFound.email);
 
-        const responce:LoginAccessData = {
-            accessToken:token
-        }
         return makeHttpResponse({
             statusCode: 200,
-            data: responce
+            data: tokens
         });
 
     } catch (error) {
+        console.error(error);
         if (error instanceof CustomError) {
             if (error instanceof NotFoundError) {
                 return makeHttpError({

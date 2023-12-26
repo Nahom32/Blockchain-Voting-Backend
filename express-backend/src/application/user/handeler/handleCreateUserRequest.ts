@@ -1,15 +1,12 @@
-import { User, UserDto } from '../user.models';
-import makeUserList from '../user.list'
-import makeUser from '../user'
-import makeHttpError from '../../../shared/makeHttpError';
-import makeHttpResponse from '../../../shared/makeHttpResponse';
-import { CustomError, 
-        RequiredParameterError,
-        InvalidPropertyError,
-        UniqueConstraintError,
-      } from '../../../shared/ customError';
-import { hashPassword } from '../../services/jwt-and-hash-services';
-import { CRequest } from '../../../shared/customRequest';
+import { CRequest } from "@shared/customRequest";
+import makeUser from "../user";
+import makeUserList from "../user.list";
+import { User, UserDto } from "../user.models";
+import { CustomError, InvalidPropertyError, RequiredParameterError, UniqueConstraintError } from "@shared/ customError";
+import makeHttpResponse from "@shared/makeHttpResponse";
+import makeHttpError from "@shared/makeHttpError";
+import { hashPassword } from "@application/services/hash-services";
+
 
 
 
@@ -40,6 +37,7 @@ async function handleCreateUserRequest(httpRequest: CRequest) {
       });
 
     } catch (error) {
+      console.error(error);
       if(error instanceof CustomError){
 
         if(error instanceof RequiredParameterError){

@@ -1,6 +1,13 @@
 import {Response } from 'express';
-import { handleCreateUserRequest} from '../../application/user';
-import { CRequest } from '../../shared/customRequest';
+import { handleCreateUserRequest } from '@application/user';
+import { CRequest } from '@shared/customRequest';
+
+/**
+ * @openapi
+ * tags:
+ *   - name: User
+ *     description: Operations related to User 
+ */
 
 /**
  * @openapi
@@ -8,6 +15,8 @@ import { CRequest } from '../../shared/customRequest';
  *   post:
  *     summary: Create a new user
  *     description: Create a new user
+ *     tags:
+ *      - User
  *     requestBody:
  *       required: true
  *       content:

@@ -1,4 +1,4 @@
-import { RequiredParameterError, InvalidPropertyError } from '../../shared/ customError';
+import { RequiredParameterError } from "@shared/ customError";
 import { Credentials } from "./credentials.models";
 
 
