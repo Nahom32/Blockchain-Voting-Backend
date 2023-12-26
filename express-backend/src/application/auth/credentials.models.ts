@@ -5,4 +5,5 @@ export interface Credentials {
 
 export interface LoginAccessData{
     accessToken:string
+    refreshToken:string
 }

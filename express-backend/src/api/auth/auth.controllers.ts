@@ -1,13 +1,22 @@
+import { handleLoginRequest } from '@application/auth';
+import { CRequest } from '@shared/customRequest';
 import { Response } from 'express';
-import { handleLoginRequest } from '../../application/auth/handeler/handleLoginRequest';
-import { CRequest } from '../../shared/customRequest';
 
 /**
  * @openapi
- * /api/auth/login:
+ * tags:
+ *   - name: Auth API
+ *     description: Operations related to auth 
+ */
+
+/**
+ * @openapi
+ * /api/v1/auth/login:
  *   post:
  *     summary: Login to the system
  *     description: Login to the system
+ *     tags:
+ *      - Auth API 
  *     requestBody:
  *       required: true
  *       content:
@@ -41,3 +50,4 @@ export function login(req: CRequest, res: Response) {
         .catch(e => res.status(500).end())
 
 }
+
