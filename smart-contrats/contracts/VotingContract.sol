@@ -52,13 +52,11 @@ contract ElectionVotingContract{
             );
             candidate_count+=1;
         }
-        elections.push(electionToPersist);
         emit ElectionCreationMessage(1,"The Election has been Created" );
     }
     
     function voteForACandidate(string memory electionId, string memory candidateId) public {
         require(votingField[msg.sender][electionId]==false);
-        votingField[msg.sender][electionId] = true;
         bool voted = false;
         for(uint i=0; i < elections.length; i++ ){
             if(keccak256(abi.encodePacked(electionId))
@@ -72,8 +70,14 @@ contract ElectionVotingContract{
                     }
                 }
             }
-            
+            if(voted == true){
+                break;
+            }
         }
+        require(voted,"The Data entered is not found");
+        votingField[msg.sender][electionId] = true;
+         emit VotedMessage(true, "Vote recorded successfully");
+        
 
     }
     function showExistingElections() public view returns(Election[] memory){
@@ -81,6 +85,21 @@ contract ElectionVotingContract{
         return retElections;
 
     }
+    function showSingleElection(string memory electionId) public view returns(Election memory){
+        Election memory result;
+        bool electionExists = false;
+        for(uint16 i = 0; i < elections.length; i++){
+            if (keccak256(abi.encode(elections[i].electionId)) == keccak256(abi.encode(electionId))){
+                electionExists = true;
+                result =  elections[i];
+            }
+
+
+        }
+        require(electionExists == true, "The election id doesn't exist");
+        return result;
+    }
+    
     
     
 }
