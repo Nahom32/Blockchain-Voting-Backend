@@ -16,6 +16,12 @@ contract ElectionVotingContract{
         Candidate[] candidates;
    
     }
+    struct CandidateDto{
+        string name;
+        string imgUrl;
+        string Description;
+
+    }
     
     
     Election[] private elections;
@@ -27,27 +33,27 @@ contract ElectionVotingContract{
     event VotedMessage(bool,string);
     
     
-    function createElection(string memory _electionName, Candidate[] memory candidatesArg) public {
+     function createElection(string memory _electionName, CandidateDto[] memory candidatesArg) public payable {
         Election storage electionToPersist =  elections.push();
         election_count+=1;
         electionToPersist.electionId = Strings.toString(election_count);
         electionToPersist.electionName = _electionName;
+        uint32 candidate_count = 1;
         for(uint i = 0; i < candidatesArg.length; i++){
             electionToPersist.candidates.push(
                 Candidate(
-                        candidatesArg[i].id,
-                    candidatesArg[i].name,
+                        Strings.toString(candidate_count),
+                        candidatesArg[i].name,
                         candidatesArg[i].imgUrl,
-                    candidatesArg[i].Description,
-                    candidatesArg[i].VoteCount,
-                    candidatesArg[i].electionId
+                        candidatesArg[i].Description,
+                        0,
+                        Strings.toString(election_count)    
                 )
             );
+            candidate_count+=1;
         }
         elections.push(electionToPersist);
         emit ElectionCreationMessage(1,"The Election has been Created" );
-   
-
     }
     
     function voteForACandidate(string memory electionId, string memory candidateId) public {
@@ -66,6 +72,7 @@ contract ElectionVotingContract{
                     }
                 }
             }
+            
         }
 
     }
