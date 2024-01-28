@@ -13,6 +13,7 @@ contract ElectionVotingContract{
     struct Election{
         string electionId;
         string electionName;
+        string description;
         Candidate[] candidates;
    
     }
@@ -33,11 +34,12 @@ contract ElectionVotingContract{
     event VotedMessage(bool,string);
     
     
-     function createElection(string memory _electionName, CandidateDto[] memory candidatesArg) public payable {
+     function createElection(string memory _electionName,string memory description, CandidateDto[] memory candidatesArg) public payable {
         Election storage electionToPersist =  elections.push();
         election_count+=1;
         electionToPersist.electionId = Strings.toString(election_count);
         electionToPersist.electionName = _electionName;
+        electionToPersist.description = description;
         uint32 candidate_count = 1;
         for(uint i = 0; i < candidatesArg.length; i++){
             electionToPersist.candidates.push(
