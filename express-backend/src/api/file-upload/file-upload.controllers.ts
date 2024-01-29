@@ -11,7 +11,7 @@ import handleFileUploadRequestRequest from '@application/file-upload/handeler/ha
 
 /**
  * @openapi
- * /upload:
+ * /api/v1/file:
  *   post:
  *     summary: Upload an image
  *     tags:
