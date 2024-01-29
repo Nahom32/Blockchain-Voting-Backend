@@ -21,8 +21,8 @@ function verifyToken(token: string, secretKey:string, options?: VerifyOptions): 
   }
 
   export function generateTokens( id:string, email:string): { accessToken: string; refreshToken: string } {
-    const accessToken = signToken({ id, email }, process.env.ACCESS_TOKEN_SECRET_KEY as string, { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN });
-    const refreshToken = signToken({ id, email }, process.env.REFRESH_TOKEN_SECRET_KEY as string, { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN });
+    const accessToken = signToken({ id, email }, process.env.ACCESS_TOKEN_SECRET_KEY as string);
+    const refreshToken = signToken({ id, email }, process.env.REFRESH_TOKEN_SECRET_KEY as string);
 
     return { accessToken, refreshToken };
   }
