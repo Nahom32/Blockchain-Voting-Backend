@@ -1,7 +1,7 @@
 import { CRequest } from "@shared/customRequest";
 import makeUser from "../user";
 import makeUserList from "../user.list";
-import { User, UserDto } from "../user.models";
+import { Role, User, UserDto } from "../user.models";
 import { CustomError, InvalidPropertyError, RequiredParameterError, UniqueConstraintError } from "@shared/ customError";
 import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
@@ -29,7 +29,8 @@ async function handleCreateUserRequest(httpRequest: CRequest) {
       const newUser = await userList.createUser(user);
       const responce:UserDto ={
         id:newUser.id,
-        email:newUser.email
+        role: newUser.role as Role,
+        email:newUser.email,
       }
       return makeHttpResponse({
         statusCode: 201,

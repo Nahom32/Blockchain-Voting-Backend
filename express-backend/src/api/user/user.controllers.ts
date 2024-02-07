@@ -28,9 +28,16 @@ import { CRequest } from '@shared/customRequest';
  *                 type: string
  *               password:
  *                 type: string
+ *               role:
+ *                 type: string
+ *                 enum:
+ *                    - ADMIN
+ *                    - ELECTOR
+ *                    - ELECTION_CREATOR
  *             example:
  *               email: john
  *               password: Doe
+ *               role: ADMIN
  * 
  *     responses:
  *       '201':
