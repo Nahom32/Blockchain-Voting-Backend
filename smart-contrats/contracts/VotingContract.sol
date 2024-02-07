@@ -13,6 +13,7 @@ contract ElectionVotingContract{
     struct Election{
         string electionId;
         string electionName;
+        address createdby;
         string description;
         Candidate[] candidates;
    
@@ -39,6 +40,7 @@ contract ElectionVotingContract{
         election_count+=1;
         electionToPersist.electionId = Strings.toString(election_count);
         electionToPersist.electionName = _electionName;
+        electionToPersist.createdby = msg.sender;
         electionToPersist.description = description;
         uint32 candidate_count = 1;
         for(uint i = 0; i < candidatesArg.length; i++){
@@ -101,7 +103,23 @@ contract ElectionVotingContract{
         require(electionExists == true, "The election id doesn't exist");
         return result;
     }
-    
+    function fetchByElectionByCreator(address creator) public view returns(Election[] memory){
+        uint count = 0;
+        for(uint i = 0; i < elections.length; i++){
+            if(elections[i].createdby == creator){
+                count+=1;
+            }
+        }
+        Election[] memory fetchedElections = new Election[](count);
+        uint idx = 0;
+        for(uint i = 0; i < elections.length; i++){
+            if(elections[i].createdby == creator){
+                fetchedElections[idx] = elections[i]; 
+            }
+        }
+        return fetchedElections;
+
+    }
     
     
 }
