@@ -2,6 +2,7 @@ import express from 'express';
 import userRoute from './api/user/user.route';
 import authRoute from './api/auth/auth.route';
 import router from './api/file-upload/file-upload.route';
+import oraganizatinRoute from './api/organization/organizations.route'
 import swaggerConfig from './swagger';
 import path from 'path';
 import cookieParser from 'cookie-parser'
@@ -23,6 +24,8 @@ app.use(cors())
 app.use('/api/v1/user', userRoute);
 app.use('/api/v1/auth', authRoute);
 app.use('/api/v1/file', router);
+app.use('/api/v1/oraganizatins', oraganizatinRoute);
+
 swaggerConfig(app); 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
