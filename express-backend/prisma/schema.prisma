@@ -19,3 +19,29 @@ model Users {
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
 }
+
+model Organizations{
+    id       String   @id @default(uuid())
+    name     String  @db.VarChar(255)
+    shortName     String  @db.VarChar(255)
+    isActive Boolean @default(false)
+
+    members Members[]
+    MemberCategories MemberCategory[]
+}
+
+model MemberCategory{
+    id       String   @id @default(uuid())
+    name     String  @db.VarChar(255)
+    organization   Organizations @relation(fields: [organizationId], references: [id])
+    organizationId String 
+}
+
+model Members{
+    id       String   @id @default(uuid())
+    name     String  @db.VarChar(255)
+    email      String  @db.VarChar(255)
+
+    organization   Organizations @relation(fields: [organizationId], references: [id])
+    organizationId String 
+}
