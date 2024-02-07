@@ -1,3 +1,4 @@
+import { Role } from '@application/user/user.models';
 import { UnauthorizedError } from '@shared/ customError';
 import jwt, { VerifyOptions } from 'jsonwebtoken';
 
@@ -20,16 +21,16 @@ function verifyToken(token: string, secretKey:string, options?: VerifyOptions): 
     }
   }
 
-  export function generateTokens( id:string, email:string): { accessToken: string; refreshToken: string } {
-    const accessToken = signToken({ id, email }, process.env.ACCESS_TOKEN_SECRET_KEY as string);
-    const refreshToken = signToken({ id, email }, process.env.REFRESH_TOKEN_SECRET_KEY as string);
+  export function generateTokens( id:string, email:string, role: Role): { accessToken: string; refreshToken: string } {
+    const accessToken = signToken({ id, email, role }, process.env.ACCESS_TOKEN_SECRET_KEY as string);
+    const refreshToken = signToken({ id, email, role }, process.env.REFRESH_TOKEN_SECRET_KEY as string);
 
     return { accessToken, refreshToken };
   }
   
   export function refreshAccessToken(refreshToken: string): { accessToken: string; refreshToken: string } {
     const decoded = verifyToken(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY as string);
-    const tokens = generateTokens(decoded.id, decoded.email);
+    const tokens = generateTokens(decoded.id, decoded.email, decoded.role);
   
     return tokens;
   }
