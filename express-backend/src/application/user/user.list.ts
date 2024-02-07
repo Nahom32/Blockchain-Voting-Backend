@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
 import { User } from './user.models';
 
 export default function makeUserList() {
@@ -13,8 +13,9 @@ export default function makeUserList() {
             data: {
                 email: user.email,
                 password: user.password,
-                saltRounds:user.saltRounds
-            },
+                saltRounds:user.saltRounds,
+                role: user.role,
+            }as Prisma.UsersCreateInput,
         });
         return newUser
     }

@@ -15,9 +15,16 @@ model Users {
   id         String   @id @default(uuid())
   email      String  @db.VarChar(255)
   password   String  @db.VarChar(255)
+  role       Role 
   saltRounds Int @db.Integer
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
+}
+
+enum Role {
+  ADMIN
+  ELECTOR
+  ELECTION_CREATOR
 }
 
 model Organizations{

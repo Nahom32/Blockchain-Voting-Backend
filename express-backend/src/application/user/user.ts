@@ -21,6 +21,7 @@ export default function makeUser(user: any, saltRounds:number): User {
     return {
         email: user.email,
         password: user.password,
+        role: user.role,
         saltRounds: saltRounds
     }
 }
