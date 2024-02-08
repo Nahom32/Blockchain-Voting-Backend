@@ -28,6 +28,8 @@ import { CRequest } from '@shared/customRequest';
  *                 type: string
  *               password:
  *                 type: string
+ *               confirmPassword:
+ *                 type: string
  *               role:
  *                 type: string
  *                 enum:

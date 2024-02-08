@@ -1,8 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@shared/prisma";
 import { Member } from "./organization.models";
 
+
 export default function makeMemberList(){
-    const prisma = new PrismaClient();
     return({
         createMember,
         getMembersByOraganizationId,

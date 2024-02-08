@@ -10,8 +10,9 @@ export default async function handleCreateOrganaizationRequest(httpRequest:CRequ
     try {
         const oraganizatin = makeOrganization(httpRequest.body)
         const oraganizationList = makeOraganizationList()
+        const userId = httpRequest.user.id
 
-        const newOraganization = await oraganizationList.createOraganization(oraganizatin)
+        const newOraganization = await oraganizationList.createOraganization(oraganizatin, userId)
         const responce:OrganizationDto = {
             id:newOraganization.id,
             name:newOraganization.name,
