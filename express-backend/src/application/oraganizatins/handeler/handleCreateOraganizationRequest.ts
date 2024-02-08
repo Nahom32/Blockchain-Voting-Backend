@@ -2,7 +2,7 @@ import { CRequest } from "@shared/customRequest";
 import makeOrganization from "../organization";
 import makeOraganizationList from "../organization.list";
 import {OrganizationDto} from "../organization.models";
-import {CustomError, RequiredParameterError } from "@shared/ customError";
+import {CustomError, RequiredParameterError, UniqueConstraintError } from "@shared/ customError";
 import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
 
@@ -10,7 +10,13 @@ export default async function handleCreateOrganaizationRequest(httpRequest:CRequ
     try {
         const oraganizatin = makeOrganization(httpRequest.body)
         const oraganizationList = makeOraganizationList()
+        console.log("httpRequest",httpRequest.user);
         const userId = httpRequest.user.id
+
+        const existingOraganization = await oraganizationList.getOraganizationByUserId(userId);
+        if(existingOraganization){
+            throw new UniqueConstraintError("User already has an oraganization");
+        }
 
         const newOraganization = await oraganizationList.createOraganization(oraganizatin, userId)
         const responce:OrganizationDto = {
@@ -33,6 +39,12 @@ export default async function handleCreateOrganaizationRequest(httpRequest:CRequ
             statusCode: 400,
             errorMessage: error.message
           });
+        }
+        if(error instanceof UniqueConstraintError){
+            return makeHttpError({
+                statusCode: 400,
+                errorMessage: error.message
+              });
         }
         return makeHttpError({
           statusCode: 400,

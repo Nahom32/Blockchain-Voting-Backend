@@ -4,7 +4,8 @@ import {
     handleCreateMemberRequest,
     handleGetMemberRequest,
     handleGetOraganizationsRequest,
-    handleToggleOraganizationActivationRequest
+    handleToggleOraganizationActivationRequest,
+    handleGetOraganizationWithMembersRequest,
 } from "@application/oraganizatins";
 import { CRequest } from "@shared/customRequest";
 
@@ -181,4 +182,36 @@ export function toggleOraganizationActivationController(req:CRequest, res:Respon
             .status(statusCode)
             .send(data)
         ).catch(e => res.status(500).end())
+}
+
+/**
+ * @openapi
+ * /api/v1/oraganizatins/{organizationId}:
+ *   get:
+ *     summary: Get organaization with members
+ *     description: Get organaization with members
+ *     tags:
+ *      - Organaization
+ *     parameters:
+ *       - in: path
+ *         name: organizationId
+ *         required: true
+ *         description: ID of the organaization to get members
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: A successful response
+ *       '400':
+ *         description: Invalid request
+ */
+export function getOraganizationWithMembersController(req:CRequest, res:Response){
+    handleGetOraganizationWithMembersRequest(req)
+        .then(({ headers, statusCode, data }) =>
+            res
+            .set(headers)
+            .status(statusCode)
+            .send(data)
+        ).catch(e => res.status(500).end())
+
 }

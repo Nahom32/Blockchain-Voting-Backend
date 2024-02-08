@@ -26,3 +26,7 @@ export interface MemberDto{
     organizationId:string;
 };
 
+export interface OrganizationWithMembers extends Organization{
+    members:Member[];
+};
+

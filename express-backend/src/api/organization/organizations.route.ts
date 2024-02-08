@@ -4,7 +4,8 @@ import {
     createOraganizatinController,
     getMemberController, 
     getOraganizationsController,
-    toggleOraganizationActivationController
+    toggleOraganizationActivationController,
+    getOraganizationWithMembersController,
 } from "./organizations.controllers";
 import { authenticateToken } from "@application/middleware/authenticateToken";
 
@@ -15,6 +16,7 @@ router.get("/", authenticateToken, getOraganizationsController);
 router.put("/:organizationId", authenticateToken, toggleOraganizationActivationController);
 router.post("/members", authenticateToken, createMemberController);
 router.get("/members/:organizationId", authenticateToken, getMemberController);
+router.get("/:organizationId", authenticateToken, getOraganizationWithMembersController);
 
 
 export default router;
