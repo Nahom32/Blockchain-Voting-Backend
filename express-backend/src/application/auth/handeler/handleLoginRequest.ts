@@ -24,7 +24,7 @@ export async function handleLoginRequest(httpRequest: CRequest) {
             throw new NotFoundError('User with email and password not found.')
         }
 
-        const tokens:LoginAccessData = generateTokens(userFound.id, userFound.email);
+        const tokens:LoginAccessData = generateTokens(userFound.id, userFound.email, userFound.role.toString() as any);
 
         return makeHttpResponse({
             statusCode: 200,

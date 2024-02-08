@@ -1,8 +1,7 @@
-import { Prisma, PrismaClient } from '@prisma/client'
+import { prisma } from "@shared/prisma";
 import { User } from './user.models';
 
 export default function makeUserList() {
-    const prisma = new PrismaClient()
     return ({
         getUserByEmail,
         createUser,
@@ -15,7 +14,7 @@ export default function makeUserList() {
                 password: user.password,
                 saltRounds:user.saltRounds,
                 role: user.role,
-            }as Prisma.UsersCreateInput,
+            },
         });
         return newUser
     }

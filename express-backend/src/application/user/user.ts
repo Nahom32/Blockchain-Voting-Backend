@@ -17,6 +17,12 @@ export default function makeUser(user: any, saltRounds:number): User {
     if (!user.password) {
         throw new RequiredParameterError('User must have a password.')
     }
+    if(!user.confirmPassword){
+        throw new RequiredParameterError('User must have a confirm password.')
+    }
+    if(user.password !== user.confirmPassword){
+        throw new InvalidPropertyError('Password and confirm password must be same.')
+    }
 
     return {
         email: user.email,

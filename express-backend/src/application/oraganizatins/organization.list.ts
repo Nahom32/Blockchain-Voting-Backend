@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@shared/prisma";
 import { Organization } from "./organization.models";
 
 export default function makeOrganizationList(){
-    const prisma = new PrismaClient();
     return({
         createOraganization,
         getOraganizationById,
@@ -10,12 +9,13 @@ export default function makeOrganizationList(){
         updateOraganization
     });
 
-    async function createOraganization(organization: Organization): Promise<Organization>{
+    async function createOraganization(organization: Organization, userId:string): Promise<Organization>{
         const newOraganization = await prisma.organizations.create({
             data:{
                 name: organization.name,
                 shortName: organization.shortName,
-                isActive: organization.isActive
+                isActive: organization.isActive,
+                userId: userId
             }
         });
         return newOraganization;
