@@ -7,6 +7,7 @@ import makeHttpError from "@shared/makeHttpError";
 import { comparePassword } from "@application/services/hash-services";
 import { generateTokens } from "@application/services/jwt-services";
 import { LoginAccessData } from "../credentials.models";
+import { Role } from "@application/user/user.models";
 
 
 export async function handleLoginRequest(httpRequest: CRequest) {
@@ -23,8 +24,16 @@ export async function handleLoginRequest(httpRequest: CRequest) {
         if (!passwordMatch) {
             throw new NotFoundError('User with email and password not found.')
         }
+        let role = Role.ELECTOR
+        if(userFound.role == 'ADMIN'){
+            role = Role.ADMIN
+        }else if(userFound.role =='ELECTION_CREATOR'){
+            role = Role.ELECTION_CREATOR
+        }else{
+            role = Role.ELECTOR
+        }
 
-        const tokens:LoginAccessData = generateTokens(userFound.id, userFound.email, userFound.role.toString() as any);
+        const tokens:LoginAccessData = generateTokens(userFound.id, userFound.email,role);
 
         return makeHttpResponse({
             statusCode: 200,
