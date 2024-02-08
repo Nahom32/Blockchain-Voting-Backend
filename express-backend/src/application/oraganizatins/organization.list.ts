@@ -6,7 +6,8 @@ export default function makeOrganizationList(){
         createOraganization,
         getOraganizationById,
         getOraganizations,
-        updateOraganization
+        updateOraganization,
+        getOraganizationByUserId,
     });
 
     async function createOraganization(organization: Organization, userId:string): Promise<Organization>{
@@ -16,7 +17,7 @@ export default function makeOrganizationList(){
                 shortName: organization.shortName,
                 isActive: organization.isActive,
                 userId: userId
-            }
+            }as any
         });
         return newOraganization;
     }
@@ -48,4 +49,25 @@ export default function makeOrganizationList(){
         });
         return updatedOraganization;
     }
+
+    async function getOraganizationByUserId(userId: string):Promise<Organization>{
+        const oraganization = await prisma.organizations.findFirst({
+            where:{
+                userId: userId
+            },
+        });
+        return oraganization as Organization;
+    }
+
+    // async function getOraganizationWithMembers(id: string):Promise<Organization>{
+    //     const oraganization = await prisma.organizations.findFirst({
+    //         where:{
+    //             id: id
+    //         },
+    //         include:{
+    //             members:true
+    //         }
+    //     });
+    //     return oraganization as Organization;
+    // }
 }
