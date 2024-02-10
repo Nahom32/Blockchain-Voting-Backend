@@ -1,5 +1,5 @@
 import {Response } from 'express';
-import { handleCreateUserRequest } from '@application/user';
+import { handleCreateUserRequest, handleVerifyEmailRequest } from '@application/user';
 import { CRequest } from '@shared/customRequest';
 
 /**
@@ -39,6 +39,7 @@ import { CRequest } from '@shared/customRequest';
  *             example:
  *               email: john
  *               password: Doe
+ *               confirmPassword: Doe
  *               role: ADMIN
  * 
  *     responses:
@@ -49,6 +50,46 @@ import { CRequest } from '@shared/customRequest';
  */
 export function createUserController(req: CRequest, res: Response){
     handleCreateUserRequest(req)
+      .then(({ headers, statusCode, data }) =>
+        res
+          .set(headers)
+          .status(statusCode)
+          .send(data)
+      )
+      .catch(e => res.status(500).end())
+}
+
+/**
+ * @openapi
+ * /api/v1/user/verify-email:
+ *   post:
+ *     summary: Verify email
+ *     description: Verify email
+ *     tags:
+ *      - User
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               otp:
+ *                 type: string
+ *             example:
+ *               email: john
+ *               otp: 1234
+ * 
+ *     responses:
+ *       '200':
+ *         description: Email verified
+ *       '400':
+ *         description: Invalid request
+ */
+export function verifyEmailController(req: CRequest, res: Response){
+    handleVerifyEmailRequest(req)
       .then(({ headers, statusCode, data }) =>
         res
           .set(headers)

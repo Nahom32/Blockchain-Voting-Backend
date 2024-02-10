@@ -15,6 +15,7 @@ model Users {
   id         String   @id @default(uuid())
   email      String  @db.VarChar(255)
   password   String  @db.VarChar(255)
+  isEmailVerified Boolean @default(false)
   role       Role 
   saltRounds Int @db.Integer
   createdAt  DateTime? @default(now())
@@ -60,7 +61,21 @@ model Members{
 
     organization   Organizations @relation(fields: [organizationId], references: [id])
     organizationId String 
-    
     createdAt  DateTime? @default(now())
     updatedAt  DateTime? @updatedAt
+}
+
+model Otp {
+    id       String   @id @default(uuid())
+    userId String
+    type     OtpType
+    otp      String
+    otpExpiration DateTime?
+    createdAt  DateTime? @default(now())
+    updatedAt  DateTime? @updatedAt
+}
+
+enum OtpType {
+    FORGET_PASSWORD
+    EMAIL_VERIFICATION
 }

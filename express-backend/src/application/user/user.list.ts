@@ -5,6 +5,7 @@ export default function makeUserList() {
     return ({
         getUserByEmail,
         createUser,
+        verifyUserEmail
     });
 
     async function createUser(user: User) {
@@ -26,5 +27,16 @@ export default function makeUserList() {
             },
         });
         return userFound
+    }
+
+    async function verifyUserEmail(userId:string){
+        await prisma.users.update({
+            where: {
+                id: userId
+            },
+            data: {
+                isEmailVerified: true,
+            },
+        });
     }
 }
