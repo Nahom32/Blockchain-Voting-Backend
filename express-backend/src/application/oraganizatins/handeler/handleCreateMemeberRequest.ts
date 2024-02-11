@@ -5,6 +5,11 @@ import makeHttpError from "@shared/makeHttpError";
 import makeMember from "../member";
 import makeMemberList from "../member.list";
 import { MemberDto } from "../organization.models";
+import {notifyMemberTemplate} from '@shared/templates';
+import sendMail, { MailInterface } from "@application/services/emials.services";
+import makeOraganizationList from "../organization.list";
+
+
 
 export default async function handleCreateMemberRequest(httpRequest:CRequest){
     try {
@@ -12,6 +17,18 @@ export default async function handleCreateMemberRequest(httpRequest:CRequest){
         const memberList = makeMemberList()
 
         const newMember = await memberList.createMember(member)
+        const organizationList = makeOraganizationList()
+        const organization = await organizationList.getOraganizationById(newMember.organizationId)
+        const organizationName = organization?.name?organization.name:""
+
+        
+        const emailTemplate = notifyMemberTemplate(newMember.name, organizationName)
+        const mail: MailInterface = {
+            to: newMember.email,
+            subject: 'Welcome to the organization',
+            html: emailTemplate.html,
+        };
+        await sendMail(mail);
         const responce:MemberDto = {
             id:newMember.id,
             name:newMember.name,

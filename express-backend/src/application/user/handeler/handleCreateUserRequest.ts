@@ -6,7 +6,9 @@ import { CustomError, InvalidPropertyError, RequiredParameterError, UniqueConstr
 import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
 import { hashPassword } from "@application/services/hash-services";
-
+import {verifyEmailTemplate} from '@shared/templates';
+import sendMail, { MailInterface } from "@application/services/emials.services";
+import {OtpType, generateOtp, saveOtp } from "@shared/otp-helper";
 
 
 
@@ -32,6 +34,22 @@ async function handleCreateUserRequest(httpRequest: CRequest) {
         role: newUser.role as Role,
         email:newUser.email,
       }
+      let tokenExpiration: any = new Date();
+        tokenExpiration = tokenExpiration.setMinutes(
+            tokenExpiration.getMinutes() + 10
+        );
+
+        const otp: string = generateOtp(6);
+        await saveOtp(newUser.id, otp, OtpType.EMAIL_VERIFICATION);
+        const emailTemplate = verifyEmailTemplate(otp);
+        const mail: MailInterface = {
+            to: user.email,
+            subject: 'Verify your email',
+            html: emailTemplate.html,
+        };
+
+        await sendMail(mail);
+
       return makeHttpResponse({
         statusCode: 201,
         data: responce
