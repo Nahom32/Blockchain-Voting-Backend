@@ -24,16 +24,8 @@ export async function handleLoginRequest(httpRequest: CRequest) {
         if (!passwordMatch) {
             throw new NotFoundError('User with email and password not found.')
         }
-        let role = Role.ELECTOR
-        if(userFound.role == 'ADMIN'){
-            role = Role.ADMIN
-        }else if(userFound.role =='ELECTION_CREATOR'){
-            role = Role.ELECTION_CREATOR
-        }else{
-            role = Role.ELECTOR
-        }
 
-        const tokens:LoginAccessData = generateTokens(userFound.id, userFound.email,role);
+        const tokens:LoginAccessData = generateTokens(userFound.id, userFound.email,userFound.role as Role);
 
         return makeHttpResponse({
             statusCode: 200,
