@@ -34,6 +34,7 @@ contract ElectionVotingContract{
     event ElectionCreationMessage(uint8,string);
     event VotedMessage(bool,string);
     mapping(string => bytes32[]) private electionField;
+    mapping(string => Election[]) private organizationElectionMapping;
     
     
      function createElection(string memory _electionName, string memory organizationId,string memory description, CandidateDto[] memory candidatesArg) public payable {
@@ -59,6 +60,7 @@ contract ElectionVotingContract{
             );
             candidate_count+=1;
         }
+        organizationElectionMapping[electionToPersist.organizationId].push(electionToPersist);
         emit ElectionCreationMessage(1,"The Election has been Created" );
     }
     
@@ -141,6 +143,30 @@ contract ElectionVotingContract{
             }
         }
         return organizationElections;
+    }
+    function personalizeElections(string [] memory organizationIds) public view returns(Election [] memory){
+        uint count = 0;
+        for(uint i = 0; i < organizationIds.length; i++){
+            count = count + organizationElectionMapping[organizationIds[i]].length;
+        
+        }
+        count = count + organizationElectionMapping[''].length;
+        Election[] memory personalized = new Election[](count);
+        uint idx = 0;
+        for(uint i = 0; i < organizationIds.length; i++){
+            for(uint j =0; j < organizationElectionMapping[organizationIds[i]].length; j++){
+                personalized[idx] = organizationElectionMapping[organizationIds[i]][j];
+                idx++;
+
+            }
+        }
+        for(uint i = 0; i < organizationElectionMapping[''].length;i++ ){
+            personalized[idx] = organizationElectionMapping[''][i];
+            idx++;
+
+        }
+        return personalized;
+
     }
     
 }

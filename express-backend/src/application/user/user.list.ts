@@ -35,7 +35,7 @@ export default function makeUserList() {
                 id: userId
             },
             data: {
-                isEmailVerified: true,
+                isEmailVerified: true ,
             },
         });
     }
