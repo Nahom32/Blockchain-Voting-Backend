@@ -21,7 +21,7 @@ model Users {
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
 
-  Organizations Organizations?
+  organizations     Organizations[]
 }
 
 enum Role {
@@ -36,8 +36,8 @@ model Organizations{
     shortName     String  @db.VarChar(255)
     isActive Boolean @default(false)
 
-    users Users @relation(fields: [userId], references: [id])
-    userId String @unique
+    users   Users  @relation(fields: [userId], references: [id])
+    userId  String 
     members Members[]
     MemberCategories MemberCategory[]
 

@@ -8,6 +8,7 @@ import { comparePassword } from "@application/services/hash-services";
 import { generateTokens } from "@application/services/jwt-services";
 import { LoginAccessData } from "../credentials.models";
 import { Role } from "@application/user/user.models";
+import makeOrganizationList from "@application/oraganizatins/organization.list";
 
 
 export async function handleLoginRequest(httpRequest: CRequest) {
@@ -24,8 +25,9 @@ export async function handleLoginRequest(httpRequest: CRequest) {
         if (!passwordMatch) {
             throw new NotFoundError('User with email and password not found.')
         }
-
-        const tokens:LoginAccessData = generateTokens(userFound.id, userFound.email,userFound.role as Role);
+        const organizationList = makeOrganizationList();
+        const organizations = await organizationList.getOrganizationsByUserEmail(userFound.email);
+        const tokens:LoginAccessData = generateTokens(userFound.id, userFound.email,userFound.role as Role, organizations);
 
         return makeHttpResponse({
             statusCode: 200,
