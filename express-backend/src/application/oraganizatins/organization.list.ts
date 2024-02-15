@@ -7,7 +7,7 @@ export default function makeOrganizationList(){
         getOraganizationById,
         getOraganizations,
         updateOraganization,
-        getOraganizationByUserId,
+        getOraganizationsByUserId,
         getOrganizationsByUserEmail
     });
 
@@ -51,13 +51,13 @@ export default function makeOrganizationList(){
         return updatedOraganization;
     }
 
-    async function getOraganizationByUserId(userId: string):Promise<Organization>{
-        const oraganization = await prisma.organizations.findFirst({
+    async function getOraganizationsByUserId(id: string):Promise<Organization[]>{
+        const oraganizations = await prisma.organizations.findMany({
             where:{
-                userId: userId
+                userId: id
             },
         });
-        return oraganization as Organization;
+        return oraganizations as Organization[];
     }
 
     async function getOrganizationsByUserEmail(email: string): Promise<Organization[]> {

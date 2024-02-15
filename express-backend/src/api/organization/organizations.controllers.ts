@@ -8,6 +8,7 @@ import {
     handleGetOraganizationWithMembersRequest,
 } from "@application/oraganizatins";
 import { CRequest } from "@shared/customRequest";
+import handleGetOrganizationsByUserId from "@application/oraganizatins/handeler/handleGetOrganizationsByUserId";
 
 /**
  * @openapi
@@ -214,4 +215,36 @@ export function getOraganizationWithMembersController(req:CRequest, res:Response
             .send(data)
         ).catch(e => res.status(500).end())
 
+}
+
+
+/**
+ * @swagger
+ * /oraganizatins/user/{userId}:
+ *   get:
+ *     summary: Get organizations by user ID
+ *     tags: [Organaization]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: User ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *       '404':
+ *         description: User not found
+ *       '500':
+ *         description: Internal server error
+ */
+export async function getOrganizationsByUserIdController(req:CRequest, res:Response){
+    handleGetOrganizationsByUserId(req)
+    .then(({ headers, statusCode, data }) =>
+        res
+        .set(headers)
+        .status(statusCode)
+        .send(data)
+    ).catch(e => res.status(500).end())
 }
