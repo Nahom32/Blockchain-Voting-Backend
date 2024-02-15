@@ -19,7 +19,8 @@ export default async function handleGetOraganizationWithMembersRequest(httpReque
             id: oraganization.id,
             name: oraganization.name,
             shortName: oraganization.shortName,
-            isActive: oraganization.isActive
+            isActive: oraganization.isActive,
+            userId: oraganization.userId
         }
 
         const memberList = makeMemberList()

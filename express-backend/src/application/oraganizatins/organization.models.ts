@@ -3,6 +3,7 @@ export interface Organization{
     name:string;
     shortName:string;
     isActive:boolean;
+    userId?: string;
 };
 
 export interface OrganizationDto{
@@ -10,6 +11,7 @@ export interface OrganizationDto{
     name:string;    
     shortName:string;
     isActive:boolean;
+    userId?: string;
 };
 
 export interface Member{
