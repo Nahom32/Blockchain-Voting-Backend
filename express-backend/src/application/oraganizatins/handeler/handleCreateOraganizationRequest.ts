@@ -13,11 +13,6 @@ export default async function handleCreateOrganaizationRequest(httpRequest:CRequ
         console.log("httpRequest",httpRequest.user);
         const userId = httpRequest.user.id
 
-        const existingOraganization = await oraganizationList.getOraganizationByUserId(userId);
-        if(existingOraganization){
-            throw new UniqueConstraintError("User already has an oraganization");
-        }
-
         const newOraganization = await oraganizationList.createOraganization(oraganizatin, userId)
         const responce:OrganizationDto = {
             id:newOraganization.id,
