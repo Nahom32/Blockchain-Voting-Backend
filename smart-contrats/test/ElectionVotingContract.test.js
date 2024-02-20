@@ -37,4 +37,29 @@ contract("ElectionVotingContract", (accounts) =>{
         assert.equal(election.organizationId,organizationId)
         
     })
+    it("Elector should vote for a candidate", async () =>{
+        const voterId = "1";
+        const candidateId = "1";
+        const electionId = "1";
+        await electionVotingContract.voteForACandidate(voterId, electionId,candidateId,{from:accounts[0]});
+        const elections = await electionVotingContract.showExistingElections();
+        const election = elections[0]
+        assert.equal(election.candidates[0].VoteCount, 1, "the election wasn't successful");
+
+    })
+    it("Elector shouldn't vote for the same election", async ()=>{
+        const voterId = "1";
+        const candidateId = "2";
+        const electionId = "1";
+        try{
+            await electionVotingContract.voteForACandidate(voterId, electionId,candidateId,{from:accounts[0]});
+        }catch(e){
+            console.log("The user has already voted")
+        }
+        const elections = await electionVotingContract.showExistingElections();
+        const election = elections[0]
+        assert.equal(election.candidates[1].VoteCount, 0, "a candidate voted  twice for the same elections");
+
+
+    })
 })
