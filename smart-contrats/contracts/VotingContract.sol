@@ -1,31 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
+import "./models.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 contract ElectionVotingContract{
-    struct Candidate{
-        string id;
-        string name;
-        string imgUrl;
-        string Description;
-        uint16 VoteCount;
-        string electionId;
-    }
-    struct Election{
-        string electionId;
-        string electionName;
-        address createdby;
-        string description;
-        string organizationId;
-        Candidate[] candidates;   
-    }
-    struct CandidateDto{
-        string name;
-        string imgUrl;
-        string Description;
-
-    }
-    
-    
     Election[] private elections;
     address[] private availableAdresses;
     uint16 private election_count; 
