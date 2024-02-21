@@ -39,9 +39,10 @@ function isAllEnvSet() {
 if (!isAllEnvSet()) {
   process.exit(1);
 }
-
+  const fileUpload = require('express-fileupload');
   const app = express();
   const port = process.env.PORT;
+  app.use(fileUpload());
   app.use(express.static(path.join(__dirname, '../public')));
   app.use(cors());
   app.use(express.json());

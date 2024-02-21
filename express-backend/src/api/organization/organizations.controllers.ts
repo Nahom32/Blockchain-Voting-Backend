@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { RequestHandler, Response } from "express";
 import { 
     handleCreateOrganaizationRequest, 
     handleCreateMemberRequest,
@@ -7,8 +7,10 @@ import {
     handleToggleOraganizationActivationRequest,
     handleGetOraganizationWithMembersRequest,
 } from "@application/oraganizatins";
-import { CRequest } from "@shared/customRequest";
+import { CRequest, FileRequest } from "@shared/customRequest";
 import handleGetOrganizationsByUserId from "@application/oraganizatins/handeler/handleGetOrganizationsByUserId";
+import handleBulkCreateMemberRequest from "@application/oraganizatins/handeler/handleCreateMembersFromFileRequest";
+import { serveCsvTemplate, serveExcelTemplate } from "@application/oraganizatins/handeler/handleDownloadTemplate";
 
 /**
  * @openapi
@@ -248,3 +250,76 @@ export async function getOrganizationsByUserIdController(req:CRequest, res:Respo
         .send(data)
     ).catch(e => res.status(500).end())
 }
+
+
+/**
+ * @openapi
+ * /api/v1/oraganizatins/members/upload:
+ *   post:
+ *     summary: Bulk create members from file
+ *     description: Bulk create members from CSV or Excel file
+ *     tags:
+ *      - Organaization
+ *     consumes:
+ *       - multipart/form-data
+ *     parameters:
+ *       - in: formData
+ *         name: file
+ *         type: file
+ *         format: binary 
+ *         description: The CSV or Excel file to upload
+ *       - in: formData
+ *         name: organizationId
+ *         type: string
+ *         description: ID of the organization to associate members
+ *     responses:
+ *       '201':
+ *         description: Members created successfully
+ *       '400':
+ *         description: Invalid request or file type
+ */
+export function bulkCreateMembersFromFileController(req: FileRequest, res: Response) {
+    handleBulkCreateMemberRequest(req, res)
+        .then(({ headers, statusCode, data }) =>
+            res
+                .set(headers)
+                .status(statusCode)
+                .send(data)
+        ).catch(e => res.status(500).end());
+}
+
+/**
+ * @openapi
+ * /api/v1/oraganizatins/csv-template:
+ *   get:
+ *     summary: Download CSV template
+ *     description: Download a CSV template file for bulk member creation
+ *     tags:
+ *      - Organaization
+ *     produces:
+ *       - application/csv
+ *     responses:
+ *       '200':
+ *         description: CSV template downloaded successfully
+ */
+export function downloadCsvTemplateController(req: FileRequest, res: Response){
+    serveCsvTemplate(res)
+};
+
+/**
+ * @openapi
+ * /api/v1/oraganizatins/excel-template:
+ *   get:
+ *     summary: Download Excel template
+ *     description: Download an Excel template file for bulk member creation
+ *     tags:
+ *      - Organaization
+ *     produces:
+ *       - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+ *     responses:
+ *       '200':
+ *         description: Excel template downloaded successfully
+ */
+export function downloadExcelTemplateController(req: FileRequest, res: Response){
+    serveExcelTemplate(res)
+};
