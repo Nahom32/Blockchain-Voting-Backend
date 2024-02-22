@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
 import "./models.sol";
+import "./statisticsModels.sol";
+
 import "@openzeppelin/contracts/utils/Strings.sol";
 contract ElectionVotingContract{
     Election[] private elections;
@@ -145,5 +147,29 @@ contract ElectionVotingContract{
         return personalized;
 
     }
+    function generateGeneralStatistics() public view returns (GeneralStatistics memory){
+        GeneralStatistics memory statistics;
+        uint privateCount  = 0;
+        uint totalVoteCounts = 0;
+        for(uint i = 0; i < elections.length; i++){
+            if (keccak256(abi.encode(elections[i].organizationId)) != 
+            keccak256(abi.encode(elections[i].organizationId))){
+                privateCount+=1;
+
+            }
+        }
+        for(uint i = 0; i < elections.length; i++){
+            for(uint j= 0; j < elections[i].candidates.length; j++){
+                totalVoteCounts+=elections[i].candidates[j].VoteCount;
+            }
+        }
+        statistics.noOfElections = elections.length;
+        statistics.noOfPrivateElections = privateCount;
+        statistics.noOfPublicElections = elections.length - privateCount;
+        statistics.totalVoteCount = totalVoteCounts;
+        return statistics;  
+
+    }
+
     
 }

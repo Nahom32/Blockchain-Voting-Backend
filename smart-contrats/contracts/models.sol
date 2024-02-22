@@ -16,10 +16,10 @@ struct Candidate{
         string organizationId;
         Candidate[] candidates;   
     }
-    struct CandidateDto{
+struct CandidateDto{
         string name;
         string imgUrl;
         string Description;
-
 }
+    
     
