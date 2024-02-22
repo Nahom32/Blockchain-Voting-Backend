@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { RequestHandler, Router } from "express";
 import { 
     createMemberController, 
     createOraganizatinController,
@@ -7,6 +7,10 @@ import {
     toggleOraganizationActivationController,
     getOraganizationWithMembersController,
     getOrganizationsByUserIdController,
+    bulkCreateMembersFromFileController,
+    downloadCsvTemplateController,
+    downloadExcelTemplateController,
+
 } from "./organizations.controllers";
 import { authenticateToken } from "@application/middleware/authenticateToken";
 
@@ -19,5 +23,12 @@ router.post("/members", authenticateToken, createMemberController);
 router.get("/members/:id", authenticateToken, getMemberController);
 router.get("/:id", authenticateToken, getOraganizationWithMembersController);
 router.get('/user/:id',authenticateToken, getOrganizationsByUserIdController);
+router.post(
+    "/members/upload",
+    authenticateToken as RequestHandler,
+    bulkCreateMembersFromFileController as RequestHandler
+  );
+router.get('/csv-template',authenticateToken, downloadCsvTemplateController as RequestHandler);
+router.get('/excel-template',authenticateToken, downloadExcelTemplateController as RequestHandler);
 
 export default router;
