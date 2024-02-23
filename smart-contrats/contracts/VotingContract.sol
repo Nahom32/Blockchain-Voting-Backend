@@ -75,9 +75,16 @@ contract ElectionVotingContract{
         return retElections;
 
     }
-    function showSingleElection(string memory electionId) public view returns(Election memory){
+    function showSingleElection(string memory voterId, string memory electionId) public view returns(SingleElectionModel memory){
         Election memory result;
         bool electionExists = false;
+        bool hasVoted = false;
+        for(uint i=0 ; i< electionField[electionId].length; i++){
+            if(keccak256(abi.encode(voterId)) ==  electionField[electionId][i]){
+                hasVoted= true;
+                break;
+            }
+        }
         for(uint16 i = 0; i < elections.length; i++){
             if (keccak256(abi.encode(elections[i].electionId)) == keccak256(abi.encode(electionId))){
                 electionExists = true;
@@ -87,7 +94,16 @@ contract ElectionVotingContract{
 
         }
         require(electionExists == true, "The election id doesn't exist");
-        return result;
+        SingleElectionModel memory singleElectionModel;
+        singleElectionModel.electionId = result.electionId;
+        singleElectionModel.electionName = result.electionName;
+        singleElectionModel.createdby = result.createdby;
+        singleElectionModel.hasVoted = hasVoted;
+        singleElectionModel.candidates = result.candidates;
+        singleElectionModel.description = result.description;
+        singleElectionModel.organizationId = result.organizationId;
+
+        return singleElectionModel;
     }
     function fetchByElectionByCreator(address creator) public view returns(Election[] memory){
         uint count = 0;
@@ -153,7 +169,7 @@ contract ElectionVotingContract{
         uint totalVoteCounts = 0;
         for(uint i = 0; i < elections.length; i++){
             if (keccak256(abi.encode(elections[i].organizationId)) != 
-            keccak256(abi.encode(elections[i].organizationId))){
+            keccak256(abi.encode(''))){
                 privateCount+=1;
 
             }
