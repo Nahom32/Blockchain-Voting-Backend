@@ -21,5 +21,15 @@ struct CandidateDto{
         string imgUrl;
         string Description;
 }
+struct SingleElectionModel{
+        string electionId;
+        string electionName;
+        address createdby;
+        string description;
+        string organizationId;
+        Candidate[] candidates;
+        bool hasVoted;
+
+}
     
     
