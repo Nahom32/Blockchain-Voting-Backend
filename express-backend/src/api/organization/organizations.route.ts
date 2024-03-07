@@ -28,7 +28,7 @@ router.post(
     authenticateToken as RequestHandler,
     bulkCreateMembersFromFileController as RequestHandler
   );
-router.get('/csv-template',authenticateToken, downloadCsvTemplateController as RequestHandler);
-router.get('/excel-template',authenticateToken, downloadExcelTemplateController as RequestHandler);
+router.get('/members/template/csv',authenticateToken, downloadCsvTemplateController as RequestHandler);
+router.get('/members/template/excel',authenticateToken, downloadExcelTemplateController as RequestHandler);
 
 export default router;
