@@ -290,7 +290,7 @@ export function bulkCreateMembersFromFileController(req: FileRequest, res: Respo
 
 /**
  * @openapi
- * /api/v1/oraganizatins/csv-template:
+ * /api/v1/oraganizatins/members/template/csv:
  *   get:
  *     summary: Download CSV template
  *     description: Download a CSV template file for bulk member creation
@@ -308,7 +308,7 @@ export function downloadCsvTemplateController(req: FileRequest, res: Response){
 
 /**
  * @openapi
- * /api/v1/oraganizatins/excel-template:
+ * /api/v1/oraganizatins/members/template/excel:
  *   get:
  *     summary: Download Excel template
  *     description: Download an Excel template file for bulk member creation
