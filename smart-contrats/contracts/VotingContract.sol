@@ -16,7 +16,7 @@ contract ElectionVotingContract{
     mapping(string => Election[]) private organizationElectionMapping;
     
     
-     function createElection(string memory _electionName, string memory organizationId,string memory description, CandidateDto[] memory candidatesArg) public payable {
+     function createElection(string memory _electionName, string memory organizationId,string memory description, CandidateDto[] memory candidatesArg) public returns (Election memory) {
         Election storage electionToPersist =  elections.push();
         election_count+=1;
         electionToPersist.electionId = Strings.toString(election_count);
@@ -41,6 +41,7 @@ contract ElectionVotingContract{
         }
         organizationElectionMapping[electionToPersist.organizationId].push(electionToPersist);
         emit ElectionCreationMessage(1,"The Election has been Created" );
+        return electionToPersist;
     }
     
     function voteForACandidate(string memory voterId,string memory electionId,string memory candidateId) public{
