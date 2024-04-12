@@ -14,4 +14,9 @@ struct ElectionSpecificStatistics{
     uint[] candidateList;
       
 }
+struct TimeSeriesPrediction{
+    string electionId;
+    mapping(string => uint) timeseriesData;
+    uint duration;
+}
 
