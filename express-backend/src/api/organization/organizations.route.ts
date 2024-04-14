@@ -14,6 +14,9 @@ import {
 } from "./organizations.controllers";
 import { authenticateToken } from "@application/middleware/authenticateToken";
 
+  const fileUpload = require('express-fileupload');
+
+
 const router = Router();
 
 router.post("/", authenticateToken,createOraganizatinController);
@@ -26,6 +29,7 @@ router.get('/user/:id',authenticateToken, getOrganizationsByUserIdController);
 router.post(
     "/members/upload",
     authenticateToken as RequestHandler,
+    fileUpload() as RequestHandler,
     bulkCreateMembersFromFileController as RequestHandler
   );
 router.get('/members/template/csv',authenticateToken, downloadCsvTemplateController as RequestHandler);
