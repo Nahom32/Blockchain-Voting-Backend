@@ -10,12 +10,12 @@ export default async function handleGetOrganizationsByUserIdRequest(httpRequest:
         if (!id) {
             throw new RequiredParameterError('user id is Requerd.')
         }
-        const memberList = makeOrganizationList()
-        const members = await memberList.getOraganizationsByUserId(id);
+        const organizationList = makeOrganizationList()
+        const organizations = await organizationList.getOraganizationsByUserId(id);
 
         return makeHttpResponse({
             statusCode: 200,
-            data: members
+            data: organizations
         });
     } catch (error) {
         console.error(error);

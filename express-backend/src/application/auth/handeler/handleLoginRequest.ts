@@ -6,7 +6,7 @@ import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
 import { comparePassword } from "@application/services/hash-services";
 import { generateTokens } from "@application/services/jwt-services";
-import { LoginAccessData } from "../credentials.models";
+import { LoginAccessData, UserDto } from "../credentials.models";
 import { Role } from "@application/user/user.models";
 import makeOrganizationList from "@application/oraganizatins/organization.list";
 
@@ -26,12 +26,25 @@ export async function handleLoginRequest(httpRequest: CRequest) {
             throw new NotFoundError('User with email and password not found.')
         }
         const organizationList = makeOrganizationList();
-        const organizations = await organizationList.getOrganizationsByUserEmail(userFound.email);
-        const tokens:LoginAccessData = generateTokens(userFound.id, userFound.email,userFound.role as Role, organizations);
-
+        const memberOf = await organizationList.getOrganizationsUserMemberOf(userFound.id);
+        const ownerOf = await organizationList.getOraganizationsByUserId(userFound.id);
+        const {accessToken, refreshToken} = generateTokens(userFound.id, userFound.email,userFound.role as Role, memberOf);
+        const user: UserDto = {
+            id: userFound.id,
+            email: userFound.email,
+            isEmailVerified: userFound.isEmailVerified,
+            role: userFound.role,
+            memberOf: memberOf,
+            ownerOf: ownerOf
+        }
+        const loginAccessData: LoginAccessData = {
+            accessToken,
+            refreshToken,
+            user
+        }
         return makeHttpResponse({
             statusCode: 200,
-            data: tokens
+            data: loginAccessData
         });
 
     } catch (error) {
