@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
-import "./models.sol";
-import "./statisticsModels.sol";
+import "./Models.sol";
+import "./StatisticsModels.sol";
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 contract ElectionVotingContract{
@@ -14,9 +14,10 @@ contract ElectionVotingContract{
     event VotedMessage(bool,string);
     mapping(string => bytes32[]) private electionField;
     mapping(string => Election[]) private organizationElectionMapping;
+    mapping(string => uint[]) private voterTimeHolder;
     
-    
-     function createElection(string memory _electionName, string memory organizationId,string memory description, CandidateDto[] memory candidatesArg) public returns (Election memory) {
+     function createElection(string memory _electionName, string memory organizationId,string memory description,
+      CandidateDto[] memory candidatesArg,uint endTime) public payable returns (Election memory) {
         Election storage electionToPersist =  elections.push();
         election_count+=1;
         electionToPersist.electionId = Strings.toString(election_count);
@@ -24,7 +25,8 @@ contract ElectionVotingContract{
         electionToPersist.createdby = msg.sender;
         electionToPersist.description = description;
         electionToPersist.organizationId = organizationId;
-        
+        electionToPersist.timeCreated = block.timestamp;
+        electionToPersist.endTime = endTime;
         uint32 candidate_count = 1;
         for(uint i = 0; i < candidatesArg.length; i++){
             electionToPersist.candidates.push(
@@ -56,6 +58,7 @@ contract ElectionVotingContract{
         Election storage election = elections[parseInt(electionId)-1];
         election.candidates[parseInt(candidateId)-1].VoteCount+=1;
         electionField[electionId].push(keccak256(abi.encode(voterId)));
+        voterTimeHolder[electionId].push(block.timestamp);
         emit VotedMessage(true, "Vote recorded successfully");
     }
    function parseInt(string memory _value) public pure returns (uint) {
@@ -187,6 +190,8 @@ contract ElectionVotingContract{
         return statistics;  
 
     }
-
+    function getVoterTime(string memory electionId) public view returns (uint[] memory){
+        return voterTimeHolder[electionId];
+    }
     
 }

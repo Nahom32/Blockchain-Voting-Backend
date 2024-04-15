@@ -14,7 +14,9 @@ struct Candidate{
         address createdby;
         string description;
         string organizationId;
-        Candidate[] candidates;   
+        Candidate[] candidates;
+        uint timeCreated;
+        uint endTime; 
     }
 struct CandidateDto{
         string name;
