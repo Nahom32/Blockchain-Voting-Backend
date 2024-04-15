@@ -1,7 +1,7 @@
 import { CRequest } from "@shared/customRequest";
 import makeCredentials from "../credentials";
 import { makeUserList } from "@application/user";
-import { CustomError, NotFoundError, RequiredParameterError } from "@shared/ customError";
+import { CustomError, NotFoundError, RequiredParameterError } from "@shared/customError";
 import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
 import { comparePassword } from "@application/services/hash-services";

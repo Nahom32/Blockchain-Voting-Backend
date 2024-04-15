@@ -13,6 +13,5 @@
       "@shared/*": ["src/shared/*"]
     }
   },
-  "include": ["src/**/*.ts", "index.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "./coverage", "./dist", "__tests__", "jest.config.js"],
 }

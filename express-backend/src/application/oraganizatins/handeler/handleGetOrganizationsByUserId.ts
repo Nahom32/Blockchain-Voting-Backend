@@ -1,5 +1,5 @@
 import { CRequest } from "@shared/customRequest";
-import { CustomError, RequiredParameterError } from "@shared/ customError";
+import { CustomError, RequiredParameterError } from "@shared/customError";
 import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
 import makeOrganizationList from "../organization.list";

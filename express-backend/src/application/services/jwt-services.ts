@@ -1,6 +1,6 @@
 import { Organization } from '@application/oraganizatins/organization.models';
 import { Role } from '@application/user/user.models';
-import { UnauthorizedError } from '@shared/ customError';
+import { UnauthorizedError } from '@shared/customError';
 import jwt, { VerifyOptions } from 'jsonwebtoken';
 
 function signToken(payload: any, secretKey:string, options: jwt.SignOptions = {}) {

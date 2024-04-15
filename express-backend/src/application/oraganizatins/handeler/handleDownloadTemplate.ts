@@ -2,7 +2,7 @@ import { Response } from 'express';
 import * as path from 'path';
 import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
-import { CustomError } from '@shared/ customError';
+import { CustomError } from '@shared/customError';
 
 export function serveCsvTemplate(res: Response) {
     try {

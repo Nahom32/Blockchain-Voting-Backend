@@ -1,7 +1,7 @@
 import { CRequest } from "@shared/customRequest";
 import makeUserList from "../user.list";
 import { Role, UserDto } from "../user.models";
-import { CustomError, InvalidPropertyError, NotFoundError, RequiredParameterError, UniqueConstraintError } from "@shared/ customError";
+import { CustomError, InvalidPropertyError, NotFoundError, RequiredParameterError, UniqueConstraintError } from "@shared/customError";
 import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
 import {OtpType, verifyOtp } from "@shared/otp-helper";

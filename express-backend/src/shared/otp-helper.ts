@@ -1,5 +1,5 @@
 import { prisma } from "@shared/prisma";
-import {InvalidPropertyError, NotFoundError } from "@shared/ customError";
+import {InvalidPropertyError, NotFoundError } from "@shared/customError";
 
 
 export enum OtpType {

@@ -2,7 +2,7 @@ import { CRequest } from "@shared/customRequest";
 import makeUser from "../user";
 import makeUserList from "../user.list";
 import { Role, User, UserDto } from "../user.models";
-import { CustomError, InvalidPropertyError, RequiredParameterError, UniqueConstraintError } from "@shared/ customError";
+import { CustomError, InvalidPropertyError, RequiredParameterError, UniqueConstraintError } from "@shared/customError";
 import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
 import { hashPassword } from "@application/services/hash-services";

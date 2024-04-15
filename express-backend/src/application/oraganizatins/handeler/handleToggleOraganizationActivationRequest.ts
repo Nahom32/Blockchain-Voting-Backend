@@ -2,7 +2,7 @@ import { CRequest } from "@shared/customRequest";
 import makeOraganizationList from "../organization.list";
 import makeHttpError from "@shared/makeHttpError";
 import makeHttpResponse from "@shared/makeHttpResponse";
-import {CustomError, RequiredParameterError, NotFoundError} from "@shared/ customError";
+import {CustomError, RequiredParameterError, NotFoundError} from "@shared/customError";
 
 export default async function handleToggleOraganizationActivationRequest(httpRequest:CRequest){
     try {
