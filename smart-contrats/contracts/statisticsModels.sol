@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: MIT
+//SPDX-License-Identifier:MIT
 pragma solidity ^0.8;
 
 struct GeneralStatistics{
@@ -11,12 +11,22 @@ struct GeneralStatistics{
 struct ElectionSpecificStatistics{
     string electionId;
     uint noOfVoters;
-    uint[] candidateList;
-      
+    uint[]candidateVotingCount;
 }
-struct TimeSeriesPrediction{
+struct ElectionTimeSeries{
     string electionId;
-    mapping(string => uint) timeseriesData;
-    uint duration;
+    mapping(string=>uint) countStatistics;
+
 }
+struct TimeSeries {
+    uint timestamp;
+    uint value;
+}
+
+enum TimeSeriesDateOptions {
+    LAST_YEAR,
+    LAST_MONTH,
+    LAST_DAY
+}
+
 
