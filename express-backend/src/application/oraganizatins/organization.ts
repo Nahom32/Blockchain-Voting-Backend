@@ -1,4 +1,4 @@
-import { RequiredParameterError } from "@shared/ customError";
+import { RequiredParameterError } from "@shared/customError";
 import { Organization } from "./organization.models";
 
 export default function makeOrganization(organization: any): Organization {

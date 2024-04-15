@@ -4,7 +4,7 @@ import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
 import makeOraganizationList from "../organization.list";
 import makeMemberList from "../member.list";
-import {CustomError, NotFoundError } from "@shared/ customError";
+import {CustomError, NotFoundError } from "@shared/customError";
 
 
 export default async function handleGetOraganizationWithMembersRequest(httpRequest:CRequest){

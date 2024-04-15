@@ -2,7 +2,7 @@ import { CRequest } from "@shared/customRequest";
 import makeOrganization from "../organization";
 import makeOraganizationList from "../organization.list";
 import {OrganizationDto} from "../organization.models";
-import {CustomError, RequiredParameterError, UniqueConstraintError } from "@shared/ customError";
+import {CustomError, RequiredParameterError, UniqueConstraintError } from "@shared/customError";
 import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
 
