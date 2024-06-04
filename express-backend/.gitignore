@@ -4,6 +4,10 @@ node_modules/
 dist
 prisma/migrations/
 coverage
+environment.ts
+.vscode/
+
+
 
 
 

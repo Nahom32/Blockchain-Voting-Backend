@@ -1,5 +1,8 @@
 import swaggerConfig from './swagger';
 import app from './app';
+import * as cron from 'node-cron'
+import { OrganizationGeneralElectionStatistics } from './application/statistics/statistics.models';
+import { generalElectionByOrganizationUpdate, orgElectionListener } from '@application/statistics/statistics.db.contract';
 
 function isAllEnvSet() {
   const envsName = [
@@ -29,6 +32,7 @@ function isAllEnvSet() {
 if (!isAllEnvSet()) {
   process.exit(1);
 }
+const taskInterval = cron.schedule('*/1 * * * *', orgElectionListener);
   const port = process.env.PORT;
   swaggerConfig(app);
   app.listen(port, () => {

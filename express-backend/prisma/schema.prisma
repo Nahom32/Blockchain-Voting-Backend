@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model SequelizeMeta {
   name String @id @db.VarChar(255)
 }
@@ -79,3 +80,41 @@ enum OtpType {
     FORGET_PASSWORD
     EMAIL_VERIFICATION
 }
+model OrganizationGeneralElectionStatistics{
+    id  String   @id @default(uuid())
+    organizationId String @unique @db.VarChar(255)
+    numberOfElections Int  
+    numberOfTotalVotes Int 
+}
+model OrganizationSpecificElectionStatistics{
+    id  String   @id @default(uuid())
+    organizationId String @db.VarChar(255)
+    electionId String @unique @db.VarChar(255)
+    electionName String @db.VarChar(255)
+    numberOfVotes Int
+    LeaderCandidate Json  
+}
+
+model IndividualGeneralElectionStatistics{
+    id String   @id @default(uuid())
+    numberOfElections Int
+    numberOfTotalParticipants Int
+    
+}
+
+model IndividualSpecificElectionStatistics{
+    id String   @id @default(uuid())
+    electionId String  @db.VarChar(255)
+    electionName String @db.VarChar(255)
+    numberOfVotes Int
+
+}
+
+model ElectionTimeSeries{
+  id String @id @default(uuid())
+  electionId String @db.VarChar(255)
+  electionName String @db.VarChar(255)
+  
+}
+
+
