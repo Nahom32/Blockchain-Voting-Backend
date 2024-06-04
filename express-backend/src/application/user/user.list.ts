@@ -5,7 +5,8 @@ export default function makeUserList() {
     return ({
         getUserByEmail,
         createUser,
-        verifyUserEmail
+        verifyUserEmail,
+        getUsers
     });
 
     async function createUser(user: User) {
@@ -38,5 +39,10 @@ export default function makeUserList() {
                 isEmailVerified: true ,
             },
         });
+    }
+
+    async function getUsers():Promise<User[]>{
+        const users = await prisma.users.findMany();
+        return users as User[];
     }
 }

@@ -1,6 +1,7 @@
 import {Response } from 'express';
 import { handleCreateUserRequest, handleVerifyEmailRequest } from '@application/user';
 import { CRequest } from '@shared/customRequest';
+import handleGetUsersRequest from '@application/user/handeler/handleGetUsers';
 
 /**
  * @openapi
@@ -97,4 +98,28 @@ export function verifyEmailController(req: CRequest, res: Response){
           .send(data)
       )
       .catch(e => res.status(500).end())
+}
+
+/**
+ * @openapi
+ * /api/v1/user:
+ *   get:
+ *     summary: Get all users
+ *     description: Get all users
+ *     tags:
+ *      - User
+ *     responses:
+ *       '200':
+ *         description: A successful response
+ *       '400':
+ *         description: Invalid request
+ */
+export function getUsersController(req:CRequest, res:Response){
+  handleGetUsersRequest(req)
+      .then(({ headers, statusCode, data }) =>
+          res
+          .set(headers)
+          .status(statusCode)
+          .send(data)
+      ).catch(e => res.status(500).end())
 }
