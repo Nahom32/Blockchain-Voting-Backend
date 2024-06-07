@@ -35,8 +35,8 @@ async function orgElectionListener(){
 }
 
 
+
 export {generalElectionByOrganizationUpdate,
     orgElectionListener}
 
-// async function generalElectionStatistics()
 

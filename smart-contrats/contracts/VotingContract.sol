@@ -194,4 +194,5 @@ contract ElectionVotingContract{
         return voterTimeHolder[electionId];
     }
     
+    
 }

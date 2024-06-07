@@ -9,6 +9,7 @@ contract("ElectionVotingContract", (accounts) =>{
         const electionName = "First Election";
         const organizationId = "org1";
         const electionDescription = "This is the first election"
+        const randomTimeValue = 11111;
         const candidates= [
             {
                 name : "John Doe",
@@ -27,7 +28,7 @@ contract("ElectionVotingContract", (accounts) =>{
             }
         ];
         await  electionVotingContract.createElection(electionName,organizationId,
-            electionDescription,candidates,{from: accounts[0]});
+            electionDescription,candidates,randomTimeValue,{from: accounts[0]});
         const elections = await electionVotingContract.showExistingElections();
         
         console.log(elections)
