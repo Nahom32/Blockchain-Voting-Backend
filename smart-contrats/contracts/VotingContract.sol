@@ -106,6 +106,7 @@ contract ElectionVotingContract{
         singleElectionModel.candidates = result.candidates;
         singleElectionModel.description = result.description;
         singleElectionModel.organizationId = result.organizationId;
+        singleElectionModel.endTime = result.endTime;
 
         return singleElectionModel;
     }
