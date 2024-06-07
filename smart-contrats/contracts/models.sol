@@ -31,7 +31,7 @@ struct SingleElectionModel{
         string organizationId;
         Candidate[] candidates;
         bool hasVoted;
-
+        uint endTime;
 }
     
     
