@@ -46,3 +46,14 @@ export async function getUserById(userId: string) {
   });
   return userFound;
 }
+
+export async function updateUserPassword(userId: string, password: string) {
+  await prisma.users.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      password: password,
+    },
+  });
+}
