@@ -1,6 +1,6 @@
 import { CRequest } from "@shared/customRequest";
 import makeUser from "../user";
-import makeUserList from "../user.list";
+import * as  userList from "../user.list";
 import { Role, User, UserDto } from "../user.models";
 import { CustomError, InvalidPropertyError, RequiredParameterError, UniqueConstraintError } from "@shared/customError";
 import makeHttpResponse from "@shared/makeHttpResponse";
@@ -18,7 +18,6 @@ async function handleCreateUserRequest(httpRequest: CRequest) {
       const saltRounds = 10;
 
       const user:User = makeUser(httpRequest.body, saltRounds);
-      const userList = makeUserList();
       const userFound = await userList.getUserByEmail(user.email);
       if(userFound){
         throw new UniqueConstraintError('User already exists.')

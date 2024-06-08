@@ -1,6 +1,6 @@
 import { CRequest } from "@shared/customRequest";
 import makeOrganization from "../organization";
-import makeOraganizationList from "../organization.list";
+import * as  organizationList from "@application/oraganizatins/organization.list";
 import {OrganizationDto} from "../organization.models";
 import {CustomError, RequiredParameterError, UniqueConstraintError } from "@shared/customError";
 import makeHttpResponse from "@shared/makeHttpResponse";
@@ -9,11 +9,10 @@ import makeHttpError from "@shared/makeHttpError";
 export default async function handleCreateOrganaizationRequest(httpRequest:CRequest){
     try {
         const oraganizatin = makeOrganization(httpRequest.body)
-        const oraganizationList = makeOraganizationList()
         console.log("httpRequest",httpRequest.user);
         const userId = httpRequest.user.id
 
-        const newOraganization = await oraganizationList.createOraganization(oraganizatin, userId)
+        const newOraganization = await organizationList.createOraganization(oraganizatin, userId)
         const responce:OrganizationDto = {
             id:newOraganization.id,
             name:newOraganization.name,

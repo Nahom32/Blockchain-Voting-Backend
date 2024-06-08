@@ -1,8 +1,9 @@
 import { CRequest } from "@shared/customRequest";
-import { CustomError, RequiredParameterError } from "@shared/customError";
+import { CustomError, NotFoundError, RequiredParameterError } from "@shared/customError";
 import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
-import makeOrganizationList from "../organization.list";
+import * as  organizationList from "@application/oraganizatins/organization.list";
+import * as  userLists from "@application/user/user.list";
 
 export default async function handleGetOrganizationsByUserIdRequest(httpRequest: CRequest) {
     try {
@@ -10,7 +11,10 @@ export default async function handleGetOrganizationsByUserIdRequest(httpRequest:
         if (!id) {
             throw new RequiredParameterError('user id is Requerd.')
         }
-        const organizationList = makeOrganizationList()
+        const user = await userLists.getUserById(id);
+        if (!user) {
+            throw new NotFoundError('User not found.')
+        }
         const organizations = await organizationList.getOraganizationsByUserId(id);
 
         return makeHttpResponse({
@@ -24,6 +28,12 @@ export default async function handleGetOrganizationsByUserIdRequest(httpRequest:
             if (error instanceof RequiredParameterError) {
                 return makeHttpError({
                     statusCode: 400,
+                    errorMessage: error.message
+                });
+            }
+            if (error instanceof NotFoundError) {
+                return makeHttpError({
+                    statusCode: 404,
                     errorMessage: error.message
                 });
             }

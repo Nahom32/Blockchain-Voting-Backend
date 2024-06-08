@@ -1,28 +1,29 @@
 import { CRequest } from "@shared/customRequest";
-import {CustomError, RequiredParameterError } from "@shared/customError";
+import {CustomError, NotFoundError, RequiredParameterError } from "@shared/customError";
 import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
 import makeMember from "../member";
-import makeMemberList from "../member.list";
+import * as memberList from "../member.list";
 import { MemberDto } from "../organization.models";
 import {notifyMemberTemplate} from '@shared/templates';
 import sendMail, { MailInterface } from "@application/services/emials.services";
-import makeOraganizationList from "../organization.list";
+import * as  organizationList from "@application/oraganizatins/organization.list";
 
 
 
 export default async function handleCreateMemberRequest(httpRequest:CRequest){
     try {
         const member = makeMember(httpRequest.body)
-        const memberList = makeMemberList()
+
+        const organization = await organizationList.getOraganizationById(member.organizationId)
+        if(!organization){
+            throw new NotFoundError('Organization not found.')
+        }
 
         const newMember = await memberList.createMember(member)
-        const organizationList = makeOraganizationList()
-        const organization = await organizationList.getOraganizationById(newMember.organizationId)
-        const organizationName = organization?.name?organization.name:""
 
         
-        const emailTemplate = notifyMemberTemplate(newMember.name, organizationName)
+        const emailTemplate = notifyMemberTemplate(newMember.name, organization.name)
         const mail: MailInterface = {
             to: newMember.email,
             subject: 'Welcome to the organization',
@@ -50,6 +51,14 @@ export default async function handleCreateMemberRequest(httpRequest:CRequest){
             errorMessage: error.message
           });
         }
+
+        if(error instanceof NotFoundError){
+          return makeHttpError({
+           statusCode: 404,
+           errorMessage: error.message
+         });
+       }
+
         return makeHttpError({
           statusCode: 400,
           errorMessage: error.message

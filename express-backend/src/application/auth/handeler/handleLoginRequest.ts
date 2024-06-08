@@ -1,6 +1,6 @@
 import { CRequest } from "@shared/customRequest";
 import makeCredentials from "../credentials";
-import { makeUserList } from "@application/user";
+import { userList } from "@application/user";
 import { CustomError, NotFoundError, RequiredParameterError } from "@shared/customError";
 import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
@@ -8,14 +8,13 @@ import { comparePassword } from "@application/services/hash-services";
 import { generateTokens } from "@application/services/jwt-services";
 import { LoginAccessData, UserDto } from "../credentials.models";
 import { Role } from "@application/user/user.models";
-import makeOrganizationList from "@application/oraganizatins/organization.list";
+import * as  organizationList from "@application/oraganizatins/organization.list";
 
 
 export async function handleLoginRequest(httpRequest: CRequest) {
     try {
         const credentials = httpRequest.body;
         const credentialsValidated = makeCredentials(credentials);
-        const userList = makeUserList();
         const userFound = await userList.getUserByEmail(credentialsValidated.email)
 
         if (!userFound) {
@@ -25,7 +24,6 @@ export async function handleLoginRequest(httpRequest: CRequest) {
         if (!passwordMatch) {
             throw new NotFoundError('User with email and password not found.')
         }
-        const organizationList = makeOrganizationList();
         const memberOf = await organizationList.getOrganizationsUserMemberOf(userFound.id);
         const ownerOf = await organizationList.getOraganizationsByUserId(userFound.id);
         const {accessToken, refreshToken} = generateTokens(userFound.id, userFound.email,userFound.role as Role, memberOf);

@@ -1,13 +1,12 @@
 import { CRequest } from "@shared/customRequest";
 import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
-import makeUserList from "../user.list";
+import  * as userList from '../user.list'
 
 
 
 export default async function handleGetUsersRequest(httpRequest:CRequest){
     try {
-        const userList = makeUserList()
         const users = await userList.getUsers();
 
         return makeHttpResponse({

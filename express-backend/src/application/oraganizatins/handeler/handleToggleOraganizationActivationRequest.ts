@@ -1,5 +1,5 @@
 import { CRequest } from "@shared/customRequest";
-import makeOraganizationList from "../organization.list";
+import * as  organizationList from "@application/oraganizatins/organization.list";
 import makeHttpError from "@shared/makeHttpError";
 import makeHttpResponse from "@shared/makeHttpResponse";
 import {CustomError, RequiredParameterError, NotFoundError} from "@shared/customError";
@@ -10,13 +10,12 @@ export default async function handleToggleOraganizationActivationRequest(httpReq
         if (!organizationId) {
             throw new RequiredParameterError('organizationId is Requerd.')
         }
-        const oraganizationList = makeOraganizationList()
-        const oraganization = await oraganizationList.getOraganizationById(organizationId);
+        const oraganization = await organizationList.getOraganizationById(organizationId);
         if(!oraganization){
             throw new NotFoundError('Oraganization not found.')
         }
         oraganization.isActive = !oraganization.isActive
-        await oraganizationList.updateOraganization(oraganization)
+        await organizationList.updateOraganization(oraganization)
         return makeHttpResponse({
             statusCode: 200,
             data: oraganization
