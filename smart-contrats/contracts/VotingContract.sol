@@ -1,6 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
-import "./Models.sol";
+import "./models.sol";
 import "./StatisticsModels.sol";
 
 import "@openzeppelin/contracts/utils/Strings.sol";
@@ -110,23 +110,23 @@ contract ElectionVotingContract{
 
         return singleElectionModel;
     }
-    function fetchByElectionByCreator(address creator) public view returns(Election[] memory){
-        uint count = 0;
-        for(uint i = 0; i < elections.length; i++){
-            if(elections[i].createdby == creator){
-                count+=1;
-            }
-        }
-        Election[] memory fetchedElections = new Election[](count);
-        uint idx = 0;
-        for(uint i = 0; i < elections.length; i++){
-            if(elections[i].createdby == creator){
-                fetchedElections[idx] = elections[i]; 
-            }
-        }
-        return fetchedElections;
+    // function fetchByElectionByCreator(address creator) public view returns(Election[] memory){
+    //     uint count = 0;
+    //     for(uint i = 0; i < elections.length; i++){
+    //         if(elections[i].createdby == creator){
+    //             count+=1;
+    //         }
+    //     }
+    //     Election[] memory fetchedElections = new Election[](count);
+    //     uint idx = 0;
+    //     for(uint i = 0; i < elections.length; i++){
+    //         if(elections[i].createdby == creator){
+    //             fetchedElections[idx] = elections[i]; 
+    //         }
+    //     }
+    //     return fetchedElections;
 
-    }
+    // }
     function fetchByOrganizationId(string memory organizationId) public view returns(Election[] memory){
         uint count = 0;
         for(uint i = 0; i < elections.length; i++){
@@ -193,6 +193,10 @@ contract ElectionVotingContract{
     }
     function getVoterTime(string memory electionId) public view returns (uint[] memory){
         return voterTimeHolder[electionId];
+    }
+    function getElectionbyId(string memory electionId) public view returns(Election memory){
+        Election memory electionToReturn = elections[parseInt(electionId)-1];
+        return electionToReturn;
     }
     
     
