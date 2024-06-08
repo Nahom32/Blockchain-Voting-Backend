@@ -3,7 +3,7 @@ import { CRequest } from "@shared/customRequest";
 import makeHttpError from "@shared/makeHttpError";
 import makeHttpResponse from "@shared/makeHttpResponse";
 import statisticsPersistenceMethods from "../statistics.persistence";
-import { RangeEnum } from "../statistics.models";
+import { ElectionTimeSeriesDTO, RangeEnum } from "../statistics.models";
 import { calculateTimeSeriesDistribution } from "../election.time.series";
 
 export async function handleGetTimeSeriesRequest(httpRequest:CRequest){
@@ -16,11 +16,18 @@ export async function handleGetTimeSeriesRequest(httpRequest:CRequest){
         }
         const persistenceMethods = statisticsPersistenceMethods()
         const statistic = await persistenceMethods.getElectionTimeSeries(electionId);
-        const timeSeriesRecord = calculateTimeSeriesDistribution(statistic?.voterTimeStamps as number[], interval)
-
+        let timeSeriesRecord: Record<string,number> = {};
+        if(statistic !== null){
+            timeSeriesRecord = calculateTimeSeriesDistribution(statistic.voterTimeStamps as number[], interval)
+        }
+        const statisticDTO:ElectionTimeSeriesDTO={
+            electionName: statistic?.electionName as string,
+            electionId: statistic?.electionId as string,
+            timeSeries: timeSeriesRecord
+        }
         return makeHttpResponse({
             statusCode: 200,
-            data: timeSeriesRecord
+            data: statisticDTO
         });
     } catch (error) {
         console.error(error);
