@@ -2,16 +2,15 @@ import { CRequest } from "@shared/customRequest";
 import {OrganizationDto, OrganizationWithMembers} from "../organization.models";
 import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
-import makeOraganizationList from "../organization.list";
-import makeMemberList from "../member.list";
+import * as  organizationList from "@application/oraganizatins/organization.list";
+import * as memberList from "../member.list";
 import {CustomError, NotFoundError } from "@shared/customError";
 
 
 export default async function handleGetOraganizationWithMembersRequest(httpRequest:CRequest){
     try {
-        const oraganizationList = makeOraganizationList()
         const oraganizationId = httpRequest.params.id;
-        const oraganization = await oraganizationList.getOraganizationById(oraganizationId);
+        const oraganization = await organizationList.getOraganizationById(oraganizationId);
         if(!oraganization){
             throw new NotFoundError("Oraganization not found");
         }
@@ -23,7 +22,6 @@ export default async function handleGetOraganizationWithMembersRequest(httpReque
             userId: oraganization.userId
         }
 
-        const memberList = makeMemberList()
         const members = await memberList.getMembersByOraganizationId(oraganizationId);
         const oraganizationWithMembers:OrganizationWithMembers = {
             ...oraganizationDto,

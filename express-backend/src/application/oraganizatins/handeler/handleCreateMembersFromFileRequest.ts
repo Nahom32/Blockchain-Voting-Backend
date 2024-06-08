@@ -2,7 +2,7 @@ import { FileRequest } from "@shared/customRequest";
 import { Response } from "express";
 import makeHttpResponse from "@shared/makeHttpResponse";
 import makeHttpError from "@shared/makeHttpError";
-import makeMemberList from "../member.list";
+import * as memberList from "../member.list";
 import * as xlsx from 'xlsx';
 import { Member } from "../organization.models";
 import { Readable } from 'stream';
@@ -10,7 +10,6 @@ import csvParser from 'csv-parser';
 
 export default async function handleBulkCreateMemberRequest(req: FileRequest, res: Response) {
     try {
-        const memberList = makeMemberList();
 
         if (req.files && req.files.file && req.body.organizationId) {
             const organizationId = req.body.organizationId;

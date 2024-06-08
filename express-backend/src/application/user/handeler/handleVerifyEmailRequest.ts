@@ -1,5 +1,5 @@
 import { CRequest } from "@shared/customRequest";
-import makeUserList from "../user.list";
+import * as  userList from "../user.list";
 import { Role, UserDto } from "../user.models";
 import { CustomError, InvalidPropertyError, NotFoundError, RequiredParameterError, UniqueConstraintError } from "@shared/customError";
 import makeHttpResponse from "@shared/makeHttpResponse";
@@ -17,7 +17,6 @@ export default async function handleVerifyEmailRequest(httpRequest: CRequest) {
             throw new RequiredParameterError('OTP');
         }
 
-        const userList = makeUserList();
         const userFound = await userList.getUserByEmail(email);
         if (!userFound) {
             throw new NotFoundError('User not found.');

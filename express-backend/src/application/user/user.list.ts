@@ -1,48 +1,48 @@
 import { prisma } from "@shared/prisma";
-import { User } from './user.models';
+import { User } from "./user.models";
 
-export default function makeUserList() {
-    return ({
-        getUserByEmail,
-        createUser,
-        verifyUserEmail,
-        getUsers
-    });
+export async function createUser(user: User) {
+  const newUser = await prisma.users.create({
+    data: {
+      email: user.email,
+      password: user.password,
+      saltRounds: user.saltRounds,
+      role: user.role,
+    },
+  });
+  return newUser;
+}
 
-    async function createUser(user: User) {
-        const newUser = await prisma.users.create({
-            data: {
-                email: user.email,
-                password: user.password,
-                saltRounds:user.saltRounds,
-                role: user.role,
-            },
-        });
-        return newUser
-    }
+export async function getUserByEmail(email: string) {
+  const userFound = await prisma.users.findFirst({
+    where: {
+      email: email,
+    },
+  });
+  return userFound;
+}
 
-    async function getUserByEmail(email: string) {
-        const userFound = await prisma.users.findFirst({
-            where: {
-                email: email
-            },
-        });
-        return userFound
-    }
+export async function verifyUserEmail(userId: string) {
+  await prisma.users.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      isEmailVerified: true,
+    },
+  });
+}
 
-    async function verifyUserEmail(userId:string){
-        await prisma.users.update({
-            where: {
-                id: userId
-            },
-            data: {
-                isEmailVerified: true ,
-            },
-        });
-    }
+export async function getUsers(): Promise<User[]> {
+  const users = await prisma.users.findMany();
+  return users as User[];
+}
 
-    async function getUsers():Promise<User[]>{
-        const users = await prisma.users.findMany();
-        return users as User[];
-    }
+export async function getUserById(userId: string) {
+  const userFound = await prisma.users.findFirst({
+    where: {
+      id: userId,
+    },
+  });
+  return userFound;
 }

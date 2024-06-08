@@ -1,8 +1,8 @@
 import express from 'express';
 import userRoute from './api/user/user.route';
-// import authRoute from './api/auth/auth.route';
-// import router from './api/file-upload/file-upload.route';
-// import oraganizatinRoute from './api/organization/organizations.route'
+import authRoute from './api/auth/auth.route';
+import router from './api/file-upload/file-upload.route';
+import oraganizatinRoute from './api/organization/organizations.route'
 import path from 'path';
 import cookieParser from 'cookie-parser'
 import compress from 'compression'
@@ -25,9 +25,9 @@ import helmet from 'helmet'
   });
 
   app.use('/api/v1/user', userRoute);
-//   app.use('/api/v1/auth', authRoute);
-//   app.use('/api/v1/file', router);
-//   app.use('/api/v1/oraganizatins', oraganizatinRoute);
+  app.use('/api/v1/auth', authRoute);
+  app.use('/api/v1/file', router);
+  app.use('/api/v1/oraganizatins', oraganizatinRoute);
 
   export default app;
 

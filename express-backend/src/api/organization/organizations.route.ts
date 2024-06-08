@@ -21,7 +21,7 @@ const router = Router();
 
 router.post("/", authenticateToken,createOraganizatinController);
 router.get("/", authenticateToken, getOraganizationsController);
-router.put("/:id", authenticateToken, toggleOraganizationActivationController);
+router.put("/:organizationId", authenticateToken, toggleOraganizationActivationController);
 router.post("/members", authenticateToken, createMemberController);
 router.get("/members/:id", authenticateToken, getMemberController);
 router.get("/:id", authenticateToken, getOraganizationWithMembersController);

@@ -7,7 +7,7 @@ export default function makeMember(member: any): Member {
     }
 
     if (!member.email) {
-        throw new RequiredParameterError('Member must have a emial.')
+        throw new RequiredParameterError('Member must have a email.')
     }
     if(!member.organizationId){
         throw new RequiredParameterError('Member must have a Organization.')
