@@ -110,11 +110,18 @@ model IndividualSpecificElectionStatistics{
 
 }
 
-model ElectionTimeSeries{
-  id String @id @default(uuid())
-  electionId String @db.VarChar(255)
-  electionName String @db.VarChar(255)
-  
+model ElectionTimeSeries {
+  id             String @id @default(uuid())
+  electionId     String @db.VarChar(255)
+  electionName   String @db.VarChar(255)
+  voterTimeStamps Int[]
+}
+
+enum DurationInterval {
+    DAILY
+    WEEKLY
+    MONTHLY
+    YEARLY
 }
 
 

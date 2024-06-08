@@ -16,12 +16,12 @@ function getAllElections(){
 }
 
 function getSingleElection(electionId: string){
-    return electionContract.methods.showSingleElection(electionId).call();
+    return electionContract.methods.getElectionbyId(electionId).call();
 }
 function getVoterTimeForElection(electionId: string){
     return electionContract.methods.getVoterTime(electionId).call();
 }
-async function getElectionByOrganization(organizationId: string): Promise<any[]>{
+async function getElectionByOrganization(organizationId: string): Promise<any>{
     return await electionContract.methods.fetchByOrganizationId(organizationId).call();
 }
 

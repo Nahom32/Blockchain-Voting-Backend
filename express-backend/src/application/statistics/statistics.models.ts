@@ -22,3 +22,21 @@ export interface IndividualSpecificElectionStatistics{
     electionId: string,
     numberOfVotes:number,
 }
+export interface ElectionTimeSeries{
+    id?:string,
+    electionName: string,
+    electionId: string,
+    voterTimeStamps: number[],
+}
+export enum RangeEnum {
+    MONTHLY = 'MONTHLY',
+    WEEKLY = 'WEEKLY',
+    YEARLY = 'YEARLY'
+}
+export interface ElectionTimeSeriesDTO{
+    id?:string,
+    electionName: string,
+    electionId: string,
+    timeSeries: Record<string,number>
+
+}

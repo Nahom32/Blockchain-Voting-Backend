@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser'
 import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
+import statisticsRoute from '@api/statistics/statistics.route';
 
 
 function isAllEnvSet() {
@@ -54,6 +55,7 @@ if (!isAllEnvSet()) {
   app.use('/api/v1/auth', authRoute);
   app.use('/api/v1/file', router);
   app.use('/api/v1/oraganizatins', oraganizatinRoute);
+  app.use('api/v1/statistics', statisticsRoute);
 
   swaggerConfig(app);
   app.listen(port, () => {

@@ -1,14 +1,18 @@
 import { prisma } from "@shared/prisma";
-import { IndividualGeneralElectionStatistics, 
+import { ElectionTimeSeries, IndividualGeneralElectionStatistics, 
     OrganizationGeneralElectionStatistics } from "./statistics.models";
 
 export default function statisticsPersistenceMethods(){
     return {
         createOrganizationGeneralElectionStatistics,
         updateOrganizationGeneralElectionStatistics,
-        createIndividualGeneralElectionStatistics,
-        updateIndividualGeneralElectionStatistics,
-        checkOrganizationElectionStatistics
+        createIndividualElectionStatistics,
+        updateIndividualElectionStatistics,
+        checkOrganizationElectionStatistics,
+        createElectionTimeSeries,
+        updateElectionTimeSeries,
+        getElectionTimeSeries,
+        getGeneralOrganizationElectionStatistics
     }
 }
 async function createOrganizationGeneralElectionStatistics(organizationStatistics: 
@@ -38,7 +42,7 @@ async function updateOrganizationGeneralElectionStatistics(organizationStatistic
     });
     return updatedOrganizationStatistics;
 }
-async function createIndividualGeneralElectionStatistics(individualStatistics: 
+async function createIndividualElectionStatistics(individualStatistics: 
     IndividualGeneralElectionStatistics){
 const newOrganizationStatistics = await prisma.individualGeneralElectionStatistics.create({
     data:{
@@ -49,7 +53,7 @@ const newOrganizationStatistics = await prisma.individualGeneralElectionStatisti
     return newOrganizationStatistics;
 } 
 
-async function updateIndividualGeneralElectionStatistics(individualStatistics: 
+async function updateIndividualElectionStatistics(individualStatistics: 
     IndividualGeneralElectionStatistics){
     const updatedOrganizationStatistics = await prisma.organizationGeneralElectionStatistics.update({
         where:{
@@ -75,6 +79,57 @@ async function checkOrganizationElectionStatistics(organizationId: string){
         return true;
     }
     return false;
+}
+
+async function createElectionTimeSeries(timeSeries:ElectionTimeSeries){
+   const electionTimeSeries = await prisma.electionTimeSeries.create({
+        data:{
+            id: timeSeries.id,
+            electionId: timeSeries.electionId,
+            voterTimeStamps: timeSeries.voterTimeStamps,
+            electionName: timeSeries.electionName
+        }as any
+   })
+   return electionTimeSeries
+}
+async function updateElectionTimeSeries(timeSeries:ElectionTimeSeries){
+    const updatedElectionTimeSeries = await prisma.electionTimeSeries.update({
+        where:{
+            id: timeSeries.id,
+            electionId: timeSeries.electionId 
+        },
+        data:{
+            id: timeSeries.id,
+            electionId: timeSeries.electionId,
+            electionName: timeSeries.electionName,
+            voterTimeStamps: timeSeries.voterTimeStamps
+
+        }
+    })
+    return updatedElectionTimeSeries
+}
+
+async function getElectionTimeSeries(electionId: string){
+    const timeSeries = await prisma.electionTimeSeries.findFirst({
+        where:{
+            electionId: electionId
+        }
+    })
+  return  timeSeries;
+}
+
+async function getGeneralOrganizationElectionStatistics(organizationId: string){
+    const electionStatistics = await prisma.organizationGeneralElectionStatistics.findFirst(
+        {
+            where: {
+                organizationId: organizationId
+            }
+        }
+    )
+    if(electionStatistics === null){
+        throw Error("ElectionStatistics instance isn't created")
+    }
+    return electionStatistics
 }
 
 
