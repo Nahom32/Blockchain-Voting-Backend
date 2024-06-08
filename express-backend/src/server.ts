@@ -1,3 +1,4 @@
+import 'module-alias/register';
 import swaggerConfig from './swagger';
 import app from './app';
 
