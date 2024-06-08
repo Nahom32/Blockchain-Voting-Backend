@@ -7,12 +7,20 @@ import * as xlsx from 'xlsx';
 import { Member } from "../organization.models";
 import { Readable } from 'stream';
 import csvParser from 'csv-parser';
+import { queueEmails } from "@application/services/emials.services";
+import * as  organizationList from "@application/oraganizatins/organization.list";
+import {CustomError, NotFoundError } from "@shared/customError";
+
 
 export default async function handleBulkCreateMemberRequest(req: FileRequest, res: Response) {
     try {
 
         if (req.files && req.files.file && req.body.organizationId) {
             const organizationId = req.body.organizationId;
+            const organization = await organizationList.getOraganizationById(organizationId)
+        if(!organization){
+            throw new NotFoundError('Organization not found.')
+        }
             const files = Array.isArray(req.files.file) ? req.files.file : [req.files.file];
 
             const members: Member[] = [];
@@ -30,6 +38,7 @@ export default async function handleBulkCreateMemberRequest(req: FileRequest, re
             }
 
             const newMembers = await memberList.createMembersFromFile(members);
+            queueEmails(members, organization.name);
 
             return makeHttpResponse({
                 statusCode: 201,
@@ -48,6 +57,21 @@ export default async function handleBulkCreateMemberRequest(req: FileRequest, re
         }
     } catch (error) {
         console.error(error);
+        if(error instanceof CustomError){
+
+            if(error instanceof NotFoundError){
+              return makeHttpError({
+               statusCode: 404,
+               errorMessage: error.message
+             });
+           }
+
+            return makeHttpError({
+              statusCode: 400,
+              errorMessage: error.message
+            });
+          }
+    
         return makeHttpError({
             statusCode: 500,
             errorMessage: 'Bulk member creation failed.',
