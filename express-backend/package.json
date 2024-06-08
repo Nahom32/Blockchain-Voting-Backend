@@ -9,7 +9,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "build": "tsc"
+    "build": "tsc",
+    "start:prod": "node dist/server.js"
   },
   "keywords": [],
   "author": "",
@@ -31,7 +32,8 @@
     "nodemailer": "^6.9.9",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "module-alias": "^2.2.2"
   },
   "devDependencies": {
     "@prisma/client": "^5.7.0",
@@ -57,5 +59,10 @@
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0"
+  },
+  "_moduleAliases": {
+    "@api": "dist/api",
+    "@application": "dist/application",
+    "@shared": "dist/shared"
   }
 }
