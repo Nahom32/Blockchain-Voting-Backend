@@ -1,7 +1,6 @@
 import {Response } from 'express';
-import { handleCreateUserRequest, handleVerifyEmailRequest } from '@application/user';
+import { handleCreateUserRequest, handleVerifyEmailRequest,handleGetUsersRequest, handleForgetPasswordRequest, handleResetPasswordRequest } from '@application/user';
 import { CRequest } from '@shared/customRequest';
-import handleGetUsersRequest from '@application/user/handeler/handleGetUsers';
 
 /**
  * @openapi
@@ -122,4 +121,87 @@ export function getUsersController(req:CRequest, res:Response){
           .status(statusCode)
           .send(data)
       ).catch(e => res.status(500).end())
+}
+
+/**
+ * @openapi
+ * /api/v1/user/forget-password:
+ *   post:
+ *     summary: Forget password
+ *     description: Forget password
+ *     tags:
+ *      - User
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *             example:
+ *               email: john
+ * 
+ *     responses:
+ *       '200':
+ *         description: Password reset
+ *       '400':
+ *         description: Invalid request
+ */
+export function forgetPasswordController(req: CRequest, res: Response){
+    handleForgetPasswordRequest(req)
+      .then(({ headers, statusCode, data }) =>
+        res
+          .set(headers)
+          .status(statusCode)
+          .send(data)
+      )
+      .catch(e => res.status(500).end())
+}
+
+/**
+ * @openapi
+ * /api/v1/user/reset-password:
+ *   post:
+ *     summary: Reset password
+ *     description: Reset password
+ *     tags:
+ *      - User
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               otp:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               confirmPassword:
+ *                 type: string
+ *             example:
+ *               email: john
+ *               otp: 1234
+ *               password: Doe
+ *               confirmPassword: Doe
+ * 
+ *     responses:
+ *       '200':
+ *         description: Password reset
+ *       '400':
+ *         description: Invalid request
+ */
+export function resetPasswordController(req: CRequest, res: Response){
+    handleResetPasswordRequest(req)
+      .then(({ headers, statusCode, data }) =>
+        res
+          .set(headers)
+          .status(statusCode)
+          .send(data)
+      )
+      .catch(e => res.status(500).end())
 }
