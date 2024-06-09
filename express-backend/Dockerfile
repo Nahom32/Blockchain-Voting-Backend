@@ -1,5 +1,5 @@
 # Use the official Node.js image as the base image
-FROM node:18
+FROM node:21-alpine
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -10,9 +10,10 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Copy the rest of your application code
+COPY prisma ./prisma
+RUN npx prisma generate
+# Copy the rest of the application files
 COPY . .
-
 # Build TypeScript files
 RUN npm run build
 
@@ -20,4 +21,4 @@ RUN npm run build
 EXPOSE 3000
 
 # Command to run your application
-CMD ["npm", "start"]
+CMD ["npm", "run", "start:prod"]
