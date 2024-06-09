@@ -1,3 +1,5 @@
+import { Member } from '@application/oraganizatins/organization.models';
+import { notifyMemberTemplate } from '@shared/templates';
 import nodemailer from 'nodemailer';
 
 
@@ -53,3 +55,53 @@ export default async function sendMail(mail: MailInterface): Promise<void> {
             console.log('Error: ', err);
         });
 }
+
+const emailQueue: Member[] = [];
+let isProcessing = false;
+let organizationName = "";
+
+// Function to process the email queue
+const processQueue = async (): Promise<void> => {
+  if (isProcessing || emailQueue.length === 0) {
+    return;
+  }
+
+  isProcessing = true;
+  const job = emailQueue.shift() as Member;
+  if (!job) {
+    isProcessing = false;
+    return;
+  }
+
+  try {
+    const { name, email } = job;
+    const emailTemplate = notifyMemberTemplate(name, organizationName);
+    const mail: MailInterface = {
+      to: email,
+      subject: "Welcome to the organization",
+      html: emailTemplate.html,
+    };
+
+    await sendMail(mail);
+  } catch (error) {
+    console.error("Error sending email:", error);
+  } finally {
+    isProcessing = false;
+    // Process the next job in the queue
+    processQueue();
+  }
+};
+
+// Function to queue emails for processing
+export const queueEmails = (
+  members: Member[],
+  name: string
+): void => {
+  members.forEach((member) => {
+    emailQueue.push(member);
+  });
+
+  // Start processing the queue
+  organizationName = name;
+  processQueue();
+};
