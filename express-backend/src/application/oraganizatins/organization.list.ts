@@ -98,3 +98,18 @@ export async function getOrganizationsUserMemberOf(
 //     });
 //     return oraganization as Organization;
 // }
+
+export async function createElectionData(
+  electionId: string,
+  candidateId: string,
+  candidateName: string,
+): Promise<any> {
+  const newData = await prisma.electionData.create({
+    data: {
+      electionId: electionId,
+      candidateId: candidateId,
+      candidateName: candidateName
+    } as any,
+  });
+  return newData;
+}
