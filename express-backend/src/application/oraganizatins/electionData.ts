@@ -1,5 +1,4 @@
-import { RequiredParameterError } from "@shared/customError";
-import { Organization } from "./organization.models";
+import { prisma } from "@shared/prisma";
 
 export default function makeElectionData(data: any): any {
     
