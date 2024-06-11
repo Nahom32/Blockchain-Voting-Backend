@@ -113,3 +113,65 @@ export async function createElectionData(
   });
   return newData;
 }
+
+export async function getElectionData(electionId: any, startTime:any, endTime: any): Promise<any[]> {
+  const start = new Date(startTime);
+const end = new Date(endTime);
+
+const duration = end.getTime() - start.getTime();;
+let interval; 
+
+if (duration <= 1000 * 60 * 60 * 24) {
+  // Duration is less than or equal to one day
+  interval = 1000 * 60 * 60; // hourly intervals
+} else if (duration <= 1000 * 60 * 60 * 24 * 30) {
+  // Duration is less than or equal to one month
+  interval = 1000 * 60 * 60 * 24; // daily intervals
+} else {
+  // Duration is greater than one month
+  interval = 1000 * 60 * 60 * 24 * 7; // weekly intervals
+}
+
+const intervals: Date[] = [];
+for (let i = start.getTime(); i <= end.getTime(); i += interval) {
+  intervals.push(new Date(i));
+}
+
+const votes = await prisma.electionData.findMany({
+  where: {
+      electionId: electionId,
+    createdAt: {
+      gte: start,
+      lte: end,
+    },
+  },
+});
+
+const result: { [key: string]: any[] } = {};
+
+intervals.forEach((interval: any, index: any) => {
+  const nextInterval = intervals[index + 1];
+  if (!nextInterval) return;
+
+  votes.forEach(vote => {
+    if (vote.createdAt! >= interval && vote.createdAt! < nextInterval) {
+      if (!result[vote.candidateName]) {
+        result[vote.candidateName] = [];
+      }
+
+      const seriesEntry = result[vote.candidateName].find((entry: { name: string; }) => entry.name === interval.toISOString());
+      if (seriesEntry) {
+        seriesEntry.value += 1;
+      } else {
+        result[vote.candidateName].push({ name: interval.toISOString(), value: 1 });
+      }
+    }
+  });
+});
+
+return Object.keys(result).map(candidateName => ({
+  candidateName,
+  series: result[candidateName],
+}));
+
+}
