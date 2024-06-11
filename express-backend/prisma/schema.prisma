@@ -79,3 +79,12 @@ enum OtpType {
     FORGET_PASSWORD
     EMAIL_VERIFICATION
 }
+
+model ElectionData {
+  id       String   @id @default(uuid())
+  electionId    String
+  candidateId   String
+  candidateName  String
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+}
