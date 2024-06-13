@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
-import "./Models.sol";
-import "./StatisticsModels.sol";
+import "./models.sol";
+import "./statisticsModels.sol";
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 contract ElectionVotingContract{
@@ -106,6 +106,7 @@ contract ElectionVotingContract{
         singleElectionModel.candidates = result.candidates;
         singleElectionModel.description = result.description;
         singleElectionModel.organizationId = result.organizationId;
+        singleElectionModel.timeCreated = result.timeCreated;
         singleElectionModel.endTime = result.endTime;
 
         return singleElectionModel;
