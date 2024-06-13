@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
 import "./VotingContract.sol";
-import "./StatisticsModels.sol";
+import "./statisticsModels.sol";
 
 
 contract ElectionStatisticsContract{
