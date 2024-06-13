@@ -73,13 +73,13 @@ export async function getOrganizationsByUserEmail(
 }
 
 export async function getOrganizationsUserMemberOf(
-  userId: string
+  userEmail: string
 ): Promise<Organization[]> {
   const organizations = await prisma.organizations.findMany({
     where: {
       members: {
         some: {
-          id: userId,
+          email: userEmail,
         },
       },
     },
@@ -116,8 +116,8 @@ export async function createElectionData(
 
 export async function getElectionData(electionId: any, startTime:any, endTime: any): Promise<any[]> {
   const start = new Date(startTime);
-const end = new Date(endTime);
-
+  const end = new Date(endTime);
+console.log(start, end)
 const duration = end.getTime() - start.getTime();;
 let interval; 
 

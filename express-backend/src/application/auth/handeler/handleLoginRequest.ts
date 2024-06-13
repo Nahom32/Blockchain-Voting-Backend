@@ -24,7 +24,7 @@ export async function handleLoginRequest(httpRequest: CRequest) {
         if (!passwordMatch) {
             throw new NotFoundError('User with email and password not found.')
         }
-        const memberOf = await organizationList.getOrganizationsUserMemberOf(userFound.id);
+        const memberOf = await organizationList.getOrganizationsUserMemberOf(userFound.email);
         const ownerOf = await organizationList.getOraganizationsByUserId(userFound.id);
         const {accessToken, refreshToken} = generateTokens(userFound.id, userFound.email,userFound.role as Role, memberOf);
         const user: UserDto = {
