@@ -16,7 +16,8 @@ struct Candidate{
         string organizationId;
         Candidate[] candidates;
         uint timeCreated;
-        uint endTime; 
+        uint endTime;
+        string electionImage; 
     }
 struct CandidateDto{
         string name;
@@ -33,6 +34,7 @@ struct SingleElectionModel{
         bool hasVoted;
         uint timeCreated;
         uint endTime;
+        string electionImage;
 }
     
     
