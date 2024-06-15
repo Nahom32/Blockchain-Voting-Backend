@@ -17,6 +17,8 @@ struct Candidate{
         Candidate[] candidates;
         uint timeCreated;
         uint endTime; 
+        string category;
+        string electionImage;
     }
 struct CandidateDto{
         string name;

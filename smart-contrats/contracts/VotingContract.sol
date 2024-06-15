@@ -17,7 +17,7 @@ contract ElectionVotingContract{
     mapping(string => uint[]) private voterTimeHolder;
     
      function createElection(string memory _electionName, string memory organizationId,string memory description,
-      CandidateDto[] memory candidatesArg,uint endTime) public payable returns (Election memory) {
+      CandidateDto[] memory candidatesArg,uint endTime, string memory _category, string memory electionImage) public payable returns (Election memory) {
         Election storage electionToPersist =  elections.push();
         election_count+=1;
         electionToPersist.electionId = Strings.toString(election_count);
@@ -27,6 +27,8 @@ contract ElectionVotingContract{
         electionToPersist.organizationId = organizationId;
         electionToPersist.timeCreated = block.timestamp;
         electionToPersist.endTime = endTime;
+        electionToPersist.category = _category;
+        electionToPersist.electionImage = electionImage;
         uint32 candidate_count = 1;
         for(uint i = 0; i < candidatesArg.length; i++){
             electionToPersist.candidates.push(
@@ -111,23 +113,23 @@ contract ElectionVotingContract{
 
         return singleElectionModel;
     }
-    function fetchByElectionByCreator(address creator) public view returns(Election[] memory){
-        uint count = 0;
-        for(uint i = 0; i < elections.length; i++){
-            if(elections[i].createdby == creator){
-                count+=1;
-            }
-        }
-        Election[] memory fetchedElections = new Election[](count);
-        uint idx = 0;
-        for(uint i = 0; i < elections.length; i++){
-            if(elections[i].createdby == creator){
-                fetchedElections[idx] = elections[i]; 
-            }
-        }
-        return fetchedElections;
+    // function fetchByElectionByCreator(address creator) public view returns(Election[] memory){
+    //     uint count = 0;
+    //     for(uint i = 0; i < elections.length; i++){
+    //         if(elections[i].createdby == creator){
+    //             count+=1;
+    //         }
+    //     }
+    //     Election[] memory fetchedElections = new Election[](count);
+    //     uint idx = 0;
+    //     for(uint i = 0; i < elections.length; i++){
+    //         if(elections[i].createdby == creator){
+    //             fetchedElections[idx] = elections[i]; 
+    //         }
+    //     }
+    //     return fetchedElections;
 
-    }
+    // }
     function fetchByOrganizationId(string memory organizationId) public view returns(Election[] memory){
         uint count = 0;
         for(uint i = 0; i < elections.length; i++){
