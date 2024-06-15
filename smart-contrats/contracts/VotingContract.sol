@@ -6,10 +6,7 @@ import "./statisticsModels.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 contract ElectionVotingContract{
     Election[] private elections;
-    address[] private availableAdresses;
     uint16 private election_count; 
-    
-    mapping(address => mapping(string=>bool)) private votingField;
     event ElectionCreationMessage(uint8,string);
     event VotedMessage(bool,string);
     mapping(string => bytes32[]) private electionField;
@@ -17,7 +14,7 @@ contract ElectionVotingContract{
     mapping(string => uint[]) private voterTimeHolder;
     
      function createElection(string memory _electionName, string memory organizationId,string memory description,
-      CandidateDto[] memory candidatesArg,uint endTime) public payable returns (Election memory) {
+      CandidateDto[] memory candidatesArg,uint endTime,string memory electionImage) public payable returns (Election memory) {
         Election storage electionToPersist =  elections.push();
         election_count+=1;
         electionToPersist.electionId = Strings.toString(election_count);
@@ -27,6 +24,7 @@ contract ElectionVotingContract{
         electionToPersist.organizationId = organizationId;
         electionToPersist.timeCreated = block.timestamp;
         electionToPersist.endTime = endTime;
+        electionToPersist.electionImage = electionImage;
         uint32 candidate_count = 1;
         for(uint i = 0; i < candidatesArg.length; i++){
             electionToPersist.candidates.push(
@@ -108,6 +106,7 @@ contract ElectionVotingContract{
         singleElectionModel.organizationId = result.organizationId;
         singleElectionModel.timeCreated = result.timeCreated;
         singleElectionModel.endTime = result.endTime;
+        singleElectionModel.electionImage = result.electionImage;
 
         return singleElectionModel;
     }
