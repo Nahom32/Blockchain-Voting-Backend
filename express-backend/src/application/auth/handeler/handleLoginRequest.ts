@@ -18,15 +18,19 @@ export async function handleLoginRequest(httpRequest: CRequest) {
         const userFound = await userList.getUserByEmail(credentialsValidated.email)
 
         if (!userFound) {
-            throw new NotFoundError('User with email and password not found.')
+            throw new NotFoundError('Invalid email or password.')
         }
         const passwordMatch = await comparePassword(credentialsValidated.password, userFound.password, userFound.saltRounds);
         if (!passwordMatch) {
-            throw new NotFoundError('User with email and password not found.')
+            throw new NotFoundError('Invalid email or password.')
         }
         const memberOf = await organizationList.getOrganizationsUserMemberOf(userFound.email);
         const ownerOf = await organizationList.getOraganizationsByUserId(userFound.id);
-        const {accessToken, refreshToken} = generateTokens(userFound.id, userFound.email,userFound.role as Role, memberOf);
+        let organizationIds: any[] = [];
+        memberOf.forEach(element => {
+            organizationIds.push(element.id)
+        });
+        const {accessToken, refreshToken} = generateTokens(userFound.id, userFound.email,userFound.role as Role, organizationIds);
         const user: UserDto = {
             id: userFound.id,
             email: userFound.email,
