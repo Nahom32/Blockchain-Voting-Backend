@@ -136,7 +136,7 @@ contract ElectionVotingContract{
         uint idx = 0;
         for(uint i = 0; i < elections.length; i++){
             if(keccak256(abi.encode(organizationId)) == keccak256(abi.encode(elections[i].organizationId))){
-                organizationElections[i] = elections[idx];
+                organizationElections[idx] = elections[i];
                 idx+=1;
             }
         }
