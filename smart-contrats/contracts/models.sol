@@ -35,6 +35,7 @@ struct SingleElectionModel{
         bool hasVoted;
         uint timeCreated;
         uint endTime;
+        string electionImage;
 }
     
     

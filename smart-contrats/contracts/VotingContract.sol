@@ -6,10 +6,7 @@ import "./statisticsModels.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 contract ElectionVotingContract{
     Election[] private elections;
-    address[] private availableAdresses;
     uint16 private election_count; 
-    
-    mapping(address => mapping(string=>bool)) private votingField;
     event ElectionCreationMessage(uint8,string);
     event VotedMessage(bool,string);
     mapping(string => bytes32[]) private electionField;
@@ -110,6 +107,7 @@ contract ElectionVotingContract{
         singleElectionModel.organizationId = result.organizationId;
         singleElectionModel.timeCreated = result.timeCreated;
         singleElectionModel.endTime = result.endTime;
+        singleElectionModel.electionImage = result.electionImage;
 
         return singleElectionModel;
     }
