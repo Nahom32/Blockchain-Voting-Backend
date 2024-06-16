@@ -103,7 +103,7 @@ Use this link to confirm your account and log in</div>
                           <p style="font-weight: 600; font-size: 18px; margin-bottom: 0;">Hey there,</p>
 
                           <p style="margin: 0 0 24px;">
-                            A forgot password request is request use the following code to reset your password
+                            A forgot password request is requested to you account on Blockchain-Voting-Backend use the following code to reset your password
                           </p>
 
                           <lable style="display: block; font-size: 24px; line-height: 100%; margin-bottom: 24px; --text-opacity: 1; color: #000000; text-decoration: none;">${otp}</lable>
@@ -128,12 +128,7 @@ Use this link to confirm your account and log in</div>
                               </td>
                             </tr>
                           </table>
-                          <p style="margin: 0 0 16px;">
-                            Needing some additional support? Please contact us at
-                            <a href="mailto:teshome4work@gmail.com" class="hover-underline"
-                              style="--text-opacity: 1; color: #7367f0;  text-decoration: none;">chiragmehta900@gmail.com</a>.
-                          </p>
-                          <p style="margin: 0 0 16px;">Thanks, <br>The node-typescript-boilerplate Support Team</p>
+                          <p style="margin: 0 0 16px;">Thanks, <br>Blockchain-Voting-Backend Team</p>
                         </td>
                       </tr>
                       <tr>
@@ -154,8 +149,7 @@ Use this link to confirm your account and log in</div>
 
     </html>`;
     const text = `
-        Verify Email, A request to create your node-typescript-boilerplate account was received.
-        Use this OTP to confirm your account and log in`;
+    A forgot password request is requested to you account on Blockchain-Voting-Backend use the following code to reset your password  ${otp}`;
     return {
         html: html,
         text: text,
