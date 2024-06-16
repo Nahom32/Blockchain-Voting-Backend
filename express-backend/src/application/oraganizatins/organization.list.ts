@@ -115,63 +115,88 @@ export async function createElectionData(
 }
 
 export async function getElectionData(electionId: any, startTime:any, endTime: any): Promise<any[]> {
-  const start = new Date(startTime);
-  const end = new Date(endTime);
-console.log(start, end)
-const duration = end.getTime() - start.getTime();;
-let interval; 
-
-if (duration <= 1000 * 60 * 60 * 24) {
-  // Duration is less than or equal to one day
-  interval = 1000 * 60 * 60; // hourly intervals
-} else if (duration <= 1000 * 60 * 60 * 24 * 30) {
-  // Duration is less than or equal to one month
-  interval = 1000 * 60 * 60 * 24; // daily intervals
-} else {
-  // Duration is greater than one month
-  interval = 1000 * 60 * 60 * 24 * 7; // weekly intervals
-}
-
-const intervals: Date[] = [];
-for (let i = start.getTime(); i <= end.getTime(); i += interval) {
-  intervals.push(new Date(i));
-}
-
-const votes = await prisma.electionData.findMany({
-  where: {
-      electionId: electionId,
-    createdAt: {
-      gte: start,
-      lte: end,
-    },
-  },
-});
-
-const result: { [key: string]: any[] } = {};
-
-intervals.forEach((interval: any, index: any) => {
-  const nextInterval = intervals[index + 1];
-  if (!nextInterval) return;
-
-  votes.forEach(vote => {
-    if (vote.createdAt! >= interval && vote.createdAt! < nextInterval) {
-      if (!result[vote.candidateName]) {
-        result[vote.candidateName] = [];
-      }
-
-      const seriesEntry = result[vote.candidateName].find((entry: { name: string; }) => entry.name === interval.toISOString());
-      if (seriesEntry) {
-        seriesEntry.value += 1;
-      } else {
-        result[vote.candidateName].push({ name: interval.toISOString(), value: 1 });
-      }
+    // Query to get the first and last recorded data for the electionId
+    const [firstRecord, lastRecord] = await Promise.all([
+      prisma.electionData.findFirst({
+        where: { electionId: electionId },
+        orderBy: { createdAt: 'asc' },
+      }),
+      prisma.electionData.findFirst({
+        where: { electionId: electionId },
+        orderBy: { createdAt: 'desc' },
+      }),
+    ]);
+  
+    if (!firstRecord || !lastRecord || !firstRecord.createdAt || !lastRecord.createdAt) {
+      throw new Error("No valid records found for the given electionId");
     }
-  });
-});
-
-return Object.keys(result).map(candidateName => ({
-  candidateName,
-  series: result[candidateName],
-}));
-
-}
+  
+    const start = new Date(firstRecord.createdAt);
+    const end = new Date(lastRecord.createdAt);
+    console.log(start, end);
+    const duration = end.getTime() - start.getTime();
+    let interval;
+  
+    if (duration <= 1000 * 60) {
+      // Duration is less than or equal to one minute
+      interval = 1000; // second intervals
+    } else if (duration <= 1000 * 60 * 60) {
+      // Duration is less than or equal to one hour
+      interval = 1000 * 10; // 10-second intervals
+    } else if (duration <= 1000 * 60 * 60 * 24) {
+      // Duration is less than or equal to one day
+      interval = 1000 * 60 * 5; // 5-minute intervals
+    } else if (duration <= 1000 * 60 * 60 * 24 * 30) {
+      // Duration is less than or equal to one month
+      interval = 1000 * 60 * 60; // hourly intervals
+    } else if (duration <= 1000 * 60 * 60 * 24 * 365) {
+      // Duration is less than or equal to one year
+      interval = 1000 * 60 * 60 * 6; // 6-hour intervals
+    } else {
+      // Duration is greater than one year
+      interval = 1000 * 60 * 60 * 24 * 30 * 3; // 3-month intervals
+    }
+  
+    const intervals: Date[] = [];
+    for (let i = start.getTime(); i <= end.getTime(); i += interval) {
+      intervals.push(new Date(i));
+    }
+  
+    const votes = await prisma.electionData.findMany({
+      where: {
+        electionId: electionId,
+        createdAt: {
+          gte: start,
+          lte: end,
+        },
+      },
+    });
+  
+    const result: { [key: string]: any[] } = {};
+  
+    intervals.forEach((interval: any, index: any) => {
+      const nextInterval = intervals[index + 1];
+      if (!nextInterval) return;
+  
+      votes.forEach(vote => {
+        if (vote.createdAt! >= interval && vote.createdAt! < nextInterval) {
+          if (!result[vote.candidateName]) {
+            result[vote.candidateName] = [];
+          }
+  
+          const seriesEntry = result[vote.candidateName].find((entry: { name: string; }) => entry.name === interval.toISOString());
+          if (seriesEntry) {
+            seriesEntry.value += 1;
+          } else {
+            result[vote.candidateName].push({ name: interval.toISOString(), value: 1 });
+          }
+        }
+      });
+    });
+  
+    return Object.keys(result).map(candidateName => ({
+      candidateName,
+      series: result[candidateName],
+    }));
+  }
+  
