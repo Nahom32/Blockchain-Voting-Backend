@@ -104,6 +104,7 @@ Use this link to confirm your account and log in</div>
 
                           <p style="margin: 0 0 24px;">
                             Hi ${memberName} This is to notify you have been added to an organization ${organizationName}.
+                            Login to the system and access your organization.
                           </p>
 
                           <table style="font-family: 'Montserrat',Arial,sans-serif;" cellpadding="0" cellspacing="0"
@@ -127,12 +128,7 @@ Use this link to confirm your account and log in</div>
                               </td>
                             </tr>
                           </table>
-                          <p style="margin: 0 0 16px;">
-                            Needing some additional support? Please contact us at
-                            <a href="mailto:teshome4work@gmail.com" class="hover-underline"
-                              style="--text-opacity: 1; color: #7367f0;  text-decoration: none;">chiragmehta900@gmail.com</a>.
-                          </p>
-                          <p style="margin: 0 0 16px;">Thanks, <br>The node-typescript-boilerplate Support Team</p>
+                          <p style="margin: 0 0 16px;">Thanks, <br>Blockchain-Voting-Backend Team</p>
                         </td>
                       </tr>
                       <tr>
@@ -153,8 +149,8 @@ Use this link to confirm your account and log in</div>
 
     </html>`;
     const text = `
-        Verify Email, A request to create your node-typescript-boilerplate account was received.
-        Use this OTP to confirm your account and log in`;
+    Hi ${memberName} This is to notify you have been added to an organization ${organizationName}.
+    Login to the system and access your organization.`;
     return {
         html: html,
         text: text,
