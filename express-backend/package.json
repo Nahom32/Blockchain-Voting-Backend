@@ -11,7 +11,7 @@
     "test:coverage": "jest --coverage",
     "build": "tsc",
     "start:prod": "node dist/server.js",
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node src/seed.ts"
   },
   "keywords": [],
   "author": "",
